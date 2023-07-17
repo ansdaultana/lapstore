@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdminAuthController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -16,3 +17,10 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
+
+Route::middleware(['auth:sanctum', 'admin'])->group(function () {
+    Route::post('/logout', [AdminAuthController::class, 'logout']);
+    Route::get('/user', [AdminAuthController::class, 'getUser']); // Wrap in an array
+});
+
+Route::post('/login', [AdminAuthController::class, 'login']);

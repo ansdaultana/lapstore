@@ -1,23 +1,89 @@
-import { createRouter, createWebHistory } from 'vue-router'
-import HomeView from '../views/HomeView.vue'
+import { createRouter, createWebHistory } from "vue-router";
+import Login from '../views/Login.vue'
+import Dashboard from '../views/Dashboard.vue'
+import RequestReset from '../views/RequestReset.vue'
+import Resetpassword from '../views/Resetpassword.vue'
+import AppLayout from '../Layouts/AppLayout.vue'
+import store from '../store/index.js';
+import NotFound from '../views/NotFound.vue';
+import Users from '../views/Users.vue';
+import Products from '../views/Products.vue';
+import Reports from '../views/Reports.vue';
 
-const router = createRouter({
-  history: createWebHistory(import.meta.env.BASE_URL),
-  routes: [
+const routes = [
     {
-      path: '/',
-      name: 'home',
-      component: HomeView
+        path: '/app/dashboard',
+        name: 'app.dashboard',
+        component: Dashboard,
+     
+    },  {
+        path: '/app/reports',
+        name: 'app.reports',
+        component: Reports,
+     
+    },  {
+        path: '/app/users',
+        name: 'app.users',
+        component: Users,
+     
+    },  {
+        path: '/app/products',
+        name: 'app.products',
+        component: Products,
+     
+    },
+    
+    {
+        path: '/login',
+        name: 'login',
+        component: Login,
+        meta: {
+            requiresGuest: true,
+        },
     },
     {
-      path: '/about',
-      name: 'about',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded when the route is visited.
-      component: () => import('../views/AboutView.vue')
+        path: '/request-password',
+        name: 'request-password',
+        component: RequestReset,
+
+        meta: {
+            requiresGuest: true,
+        },
+    },
+
+    {
+        path: '/reset-password/:token',
+        name: 'reset-password',
+        component: Resetpassword,
+
+        meta: {
+            requiresGuest: true,
+        },
+    },
+    {
+        path:'/:pathMatch(.*)',
+        name:'notfound',
+        component:NotFound,
     }
-  ]
+];
+const router = createRouter({
+    history: createWebHistory(),
+    routes
 })
 
-export default router
+
+// router.beforeEach((to, from, next) => {
+//     if (to.meta.requiresAuth && !store.state.user.token) {
+//         next({ name: Login })
+
+//     }
+//     else if (to.meta.requiresGuest && store.state.user.token) {
+//         next({ name: app.Dashboard })
+
+//     }
+//     else {
+//         next();
+//     }
+// })
+
+export default router;
