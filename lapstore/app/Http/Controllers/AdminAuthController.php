@@ -36,13 +36,8 @@ class AdminAuthController extends Controller
                 'email' => 'You do not have permission to authenticate as an admin.',
             ])->status(403);
         }
-
-        // If authentication is successful, log in the user
         Auth::login($user, $request->remember);
-
-        // Continue with generating the token and returning the response
         $token = $user->createToken('main')->plainTextToken;
-
         return response([
             'user' => $user,
             'token' => $token,
