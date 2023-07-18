@@ -19,7 +19,7 @@
         <div >
             <router-link :to="{name: 'app.dashboard'}">
 
-            <div id="container" class="flex  hover:bg-white rounded-md  hover:text-orange-500 mt-3">
+            <div id="container" class="flex   tansition-transform hover:scale-105-transform hover:scale-105 duration-200 ease-in hover:bg-white rounded-md  hover:text-orange-500 mt-3">
                 <div class="bg-orange py-1 w-1" :class="{'bg-orange-500':route.name==='app.dashboard'}">
                 </div>
                 <div class="pl-4 flex p-2">
@@ -39,7 +39,7 @@
         </router-link >
         <router-link :to="{name: 'app.products'}">
 
-            <div  id="container" class="flex hover:bg-white rounded-md  hover:text-orange-500 mt-3">
+            <div  id="container" class="flex  tansition-transform hover:scale-105 duration-200 ease-in hover:bg-white rounded-md  hover:text-orange-500 mt-3">
                 <div class="bg-orange py-1 w-1" :class="{'bg-orange-500':route.name==='app.products'}">
 
                 </div>
@@ -62,7 +62,7 @@
         </router-link >
         <router-link :to="{name: 'app.users'}">
 
-            <div id="container" class="flex   hover:bg-white rounded-md hover:text-orange-500 mt-3">
+            <div id="container" class="flex  tansition-transform hover:scale-105 duration-200 ease-in  hover:bg-white rounded-md hover:text-orange-500 mt-3">
                 <div class="bg-orange py-1 w-1" :class="{'bg-orange-500':route.name==='app.users'}">
 
                 </div>
@@ -85,7 +85,7 @@
         </router-link >
         <router-link :to="{name: 'app.reports'}">
 
-            <div  id="container" class="flex  hover:bg-white rounded-md  hover:text-orange-500 mt-3">
+            <div  id="container" class="flex  tansition-transform hover:scale-105 duration-200 ease-in hover:bg-white rounded-md  hover:text-orange-500 mt-3">
                 <div class="bg-orange py-1 w-1"  :class="{'bg-orange-500':route.name==='app.reports'}">
 
                 </div>
@@ -112,6 +112,8 @@
     </div>
 </template>
 <style>
+
+  
 #container:hover .bg-orange {
     background-color: rgb(255, 119, 0);
 }
