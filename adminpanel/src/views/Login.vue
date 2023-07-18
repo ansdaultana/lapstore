@@ -1,6 +1,7 @@
 <script setup>
 import GuestLayout from '../Layouts/GuestLayout.vue'
 import { ref } from 'vue';
+
 import axios from 'axios';
 import store from '../store/index.js';
 import router from '../router/index.js';
@@ -15,22 +16,15 @@ const user = ref({
 
 const login = async () => {
   try {
-    await axios.get('http://localhost:8000/sanctum/csrf-cookie');
-  const response = await axios.post('http://localhost:8000/login',
-    {
-      email: user.value.email,
-      password: user.value.password,
-      remember: user.value.remember
-    });
-    console.log(response)
-    if (response.data && response.data.token) {
-      router.push({name:'app.dashboard'});
-    }    
+    loading.value = true;
+    const response = await store.dispatch('login', user);
+    loading.value = false;
   } catch (error) {
-    
+    loading.value = false;
+    errorMsg.value = error.response.data.message;
   }
+};
 
-}
 </script>
 
 <template>
@@ -59,7 +53,9 @@ const login = async () => {
         <div class="flex items-center justify-between">
           <label for="password" class="block text-sm font-medium leading-6 text-white">Password</label>
           <div class="text-sm">
-            <router-link :to="{ name: 'request-password' }" class="font-semibold text-[#20D0FF] hover:text-[#00A7D4]">Forgot
+            <router-link :to="{ name: 'request-password' }"
+              class="font-semibold text-[#20D0FF] hover:text-[#00A7D4]">Forgot
+              t
               password?</router-link>
           </div>
         </div>
