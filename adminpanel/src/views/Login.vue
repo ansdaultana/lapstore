@@ -55,9 +55,7 @@ const login = async () => {
           <label for="password" class="block text-sm font-medium leading-6 text-white">Password</label>
           <div class="text-sm">
             <router-link :to="{ name: 'request-password' }"
-              class="font-semibold text-[#20D0FF] hover:text-[#00A7D4]">Forgot
-              t
-              password?</router-link>
+              class="font-semibold text-[#20D0FF] hover:text-[#00A7D4]">Forgot password?</router-link>
           </div>
         </div>
         <div class="mt-2">

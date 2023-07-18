@@ -17,11 +17,9 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-
 Route::post('/logout', [AdminAuthController::class, 'logout']);
 
 Route::middleware('auth:sanctum')->group(function () {
-
     Route::get('/user', [AdminAuthController::class, 'getUser']); // Wrap in an array
 });
 

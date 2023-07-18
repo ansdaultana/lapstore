@@ -42,25 +42,29 @@ class AdminAuthController extends Controller
         ]);
     }
     
-
     public function logout()
     {
-    //    $csrfCookie = Cookie::get('X-CSRF-TOKEN');
-      //  if (!$csrfCookie) {
-            // Handle the missing CSRF token error (optional).
-        //    return response(['message' => 'CSRF token not found'], 419);
-       // }
-         $user = Auth::user();
-         if (!$user) {
-            return response([
-                'message' => 'not logged in'
-            ], 400);        }
-      //   $user->currentAccessToken()->delete();
-        return response([
-            'message' => $user
+        $user = Auth::user();
+        $user->tokens()->delete();
 
-        ], 200);
+        return response('loggedout', 200);
     }
+    // public function logout()
+    // {
+  
+    //      $user = Auth::user();
+         
+    //      if (!$user) {
+    //         return response([
+    //             'message' => 'not logged in'
+    //         ], 400);        }
+    //   //   $user->currentAccessToken()->delete();
+    //  
+    //     return response([
+    //         'message' => $user
+
+    //     ], 200);
+    // }
     public function getUser(Request $request)
     {
         return new UserResource($request->user());
