@@ -17,7 +17,8 @@ const user = ref({
 const login = async () => {
   try {
     loading.value = true;
-    const response = await store.dispatch('login', user);
+    const token  = await store.dispatch('login', user);
+ //   console.log('Token:', token.name);
     loading.value = false;
   } catch (error) {
     loading.value = false;

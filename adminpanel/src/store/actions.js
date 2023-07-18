@@ -14,7 +14,6 @@ export async function login({ commit }, user) {
         if (response.data && response.data.token) {
             commit('setUser', response.data.user);
             commit('setToken', response.data.token);
-
             router.push({ name: 'app.dashboard' });
         }
         return response.data;
