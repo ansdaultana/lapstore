@@ -1,6 +1,7 @@
 import axiosClient from "../axios";
 import axios from "axios";
 import router from "../router";
+axios.defaults.withCredentials = true;
 export async function login({ commit }, user) {
 
     try {
@@ -26,13 +27,20 @@ export async function login({ commit }, user) {
 }
 
 
-
-export function logout({ commit }) {
-    return axiosClient.post('/logout')
-        .then((respone) => {
-            commit('setToken', null)
-            return respone;
-        })
+export async function logout({ commit }) {
+    try {
+        console.log('in logout');
+        await axios.get('http://localhost:8000/sanctum/csrf-cookie');
+        const response = await axios.post('http://localhost:8000/logout');
+        if (response.data) {
+            commit('setToken', '');
+            commit('setUser', {});
+            router.push({ name: 'login' });
+        }
+        return response;
+    } catch (error) {
+        console.error(error);
+    }
 }
 
 export function getUser({ commit }, data) {

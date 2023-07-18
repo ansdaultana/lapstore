@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Cookie;
 
 class AdminAuthController extends Controller
 {public function login(Request $request)
@@ -44,9 +45,21 @@ class AdminAuthController extends Controller
 
     public function logout()
     {
-        $user = Auth::user();
-        $user->currentAccessToken()->delete();
-        return response('', 204);
+    //    $csrfCookie = Cookie::get('X-CSRF-TOKEN');
+      //  if (!$csrfCookie) {
+            // Handle the missing CSRF token error (optional).
+        //    return response(['message' => 'CSRF token not found'], 419);
+       // }
+         $user = Auth::user();
+         if (!$user) {
+            return response([
+                'message' => 'not logged in'
+            ], 400);        }
+      //   $user->currentAccessToken()->delete();
+        return response([
+            'message' => $user
+
+        ], 200);
     }
     public function getUser(Request $request)
     {

@@ -18,8 +18,10 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::middleware(['auth:sanctum', 'admin'])->group(function () {
-    Route::post('/logout', [AdminAuthController::class, 'logout']);
+Route::post('/logout', [AdminAuthController::class, 'logout']);
+
+Route::middleware('auth:sanctum')->group(function () {
+
     Route::get('/user', [AdminAuthController::class, 'getUser']); // Wrap in an array
 });
 

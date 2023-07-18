@@ -15,24 +15,33 @@ const routes = [
         path: '/app/dashboard',
         name: 'app.dashboard',
         component: Dashboard,
-     
-    },  {
+        meta: {
+            requiresAuth: true
+        }
+
+    }, {
         path: '/app/reports',
         name: 'app.reports',
         component: Reports,
-     
-    },  {
+        meta: {
+            requiresAuth: true
+        }
+    }, {
         path: '/app/users',
         name: 'app.users',
         component: Users,
-     
-    },  {
+        meta: {
+            requiresAuth: true
+        }
+    }, {
         path: '/app/products',
         name: 'app.products',
         component: Products,
-     
+        meta: {
+            requiresAuth: true
+        }
     },
-    
+
     {
         path: '/login',
         name: 'login',
@@ -61,9 +70,9 @@ const routes = [
         },
     },
     {
-        path:'/:pathMatch(.*)',
-        name:'notfound',
-        component:NotFound,
+        path: '/:pathMatch(.*)',
+        name: 'notfound',
+        component: NotFound,
     }
 ];
 const router = createRouter({
@@ -72,18 +81,17 @@ const router = createRouter({
 })
 
 
-// router.beforeEach((to, from, next) => {
-//     if (to.meta.requiresAuth && !store.state.user.token) {
-//         next({ name: Login })
+router.beforeEach((to, from, next) => {
+    if (to.meta.requiresAuth && !store.state.user.token) {
+        next({ name: Login })
+    }
+    else if (to.meta.requiresAuth === false && store.state.user.token) {
+        next({ name: app.Dashboard })
 
-//     }
-//     else if (to.meta.requiresGuest && store.state.user.token) {
-//         next({ name: app.Dashboard })
-
-//     }
-//     else {
-//         next();
-//     }
-// })
+    }
+    else {
+        next();
+    }
+})
 
 export default router;
