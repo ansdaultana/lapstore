@@ -11,22 +11,20 @@ use Illuminate\Validation\ValidationException;
 use Illuminate\Support\Facades\Cookie;
 
 class AdminAuthController extends Controller
-{public function login(Request $request)
+{
+    public function login(Request $request)
     {
         $request->validate([
             'email' => 'required|email',
             'password' => 'required',
             'remember' => 'boolean',
         ]);
-    
         $user = User::where('email', $request->email)->first();
-    
         if (!$user || !Hash::check($request->password, $user->password)) {
             return response([
                 'message' => 'Invalid credentials.'
             ], 422);
         }
-    
         if (!$user->isAdmin()) {
             return response([
                 'message' => 'You do not have permission to authenticate as an admin.'
@@ -39,32 +37,15 @@ class AdminAuthController extends Controller
         return response([
             'user' => new UserResource($user),
             'token' => $token,
-        ]);
+        ],200);
     }
     
     public function logout()
     {
         $user = Auth::user();
         $user->tokens()->delete();
-
         return response('loggedout', 200);
     }
-    // public function logout()
-    // {
-  
-    //      $user = Auth::user();
-         
-    //      if (!$user) {
-    //         return response([
-    //             'message' => 'not logged in'
-    //         ], 400);        }
-    //   //   $user->currentAccessToken()->delete();
-    //  
-    //     return response([
-    //         'message' => $user
-
-    //     ], 200);
-    // }
     public function getUser(Request $request)
     {
         return new UserResource($request->user());
