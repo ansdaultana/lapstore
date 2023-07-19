@@ -22,6 +22,7 @@ const login = async () => {
     loading.value = false;
   } catch (error) {
     loading.value = false;
+    console.log(error.response.data.message);
     errorMsg.value = error.response.data.message;
   }
 };

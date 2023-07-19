@@ -137,7 +137,6 @@
                 </div>
             </div>
         </div>
-        <script src="{{ asset('vendor/sanctum/csrf-cookie.js') }}"></script>
 
     </body>
 </html>
