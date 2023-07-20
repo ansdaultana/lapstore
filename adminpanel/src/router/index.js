@@ -7,9 +7,9 @@ import AppLayout from '../Layouts/AppLayout.vue'
 import store from '../store/index.js';
 import NotFound from '../views/NotFound.vue';
 import Users from '../views/Users.vue';
-import Products from '../views/Products.vue';
+import Products from '../Products/Products.vue';
 import Reports from '../views/Reports.vue';
-
+import NewProduct from '../Products/NewProduct.vue'
 const routes = [
     {
         path: '/app/dashboard',
@@ -19,14 +19,17 @@ const routes = [
             requiresAuth: true
         }
 
-    }, {
+    },
+    {
         path: '/app/reports',
         name: 'app.reports',
         component: Reports,
         meta: {
             requiresAuth: true
         }
-    }, {
+    },
+
+    {
         path: '/app/users',
         name: 'app.users',
         component: Users,
@@ -41,7 +44,14 @@ const routes = [
             requiresAuth: true
         }
     },
-
+    {
+        path: '/app/new-product',
+        name: 'app.newproduct',
+        component: NewProduct,
+        meta: {
+            requiresAuth: true
+        }
+    },
     {
         path: '/login',
         name: 'login',

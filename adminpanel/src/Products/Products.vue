@@ -2,11 +2,17 @@
 <script setup>
 import AppLayout from '../Layouts/AppLayout.vue'
 import { computed,ref } from 'vue';
+import router from '../router';
 import CustomPagination from '../components/CustomPagination.vue';
+
+
+const goToNewProduct =()=>{
+  router.push({ name: 'app.newproduct' });
+  
+}
 const currentPage = ref(1);
 const itemsPerPage = 10;
 const totalItems = 100;
-
 const totalPages = computed(() => Math.ceil(totalItems / itemsPerPage));
 const products = [
   {
@@ -102,6 +108,7 @@ const products = [
         </div>
        
         <div
+        @click="goToNewProduct"
           class="
           rotate-svg
           transition-transform hover:-translate-x-5
