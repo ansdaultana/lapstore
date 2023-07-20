@@ -1,6 +1,13 @@
 
 <script setup>
 import AppLayout from '../Layouts/AppLayout.vue'
+import { computed,ref } from 'vue';
+import CustomPagination from '../components/CustomPagination.vue';
+const currentPage = ref(1);
+const itemsPerPage = 10;
+const totalItems = 100;
+
+const totalPages = computed(() => Math.ceil(totalItems / itemsPerPage));
 const products = [
   {
     ID: 1,
@@ -80,33 +87,45 @@ const products = [
 </script>
 <template>
   <AppLayout>
-    <div class="relative ">
+    <div class="relative flex-col ">
 
       <div class=" flex justify-between ">
-        <div class="text-orange-500 text-lg mt-2  ml-5 hover:text-orange-600 ">
-          Products
+        <div class="flex">
+          <div class="text-orange-500 text-lg mt-2  ml-5 hover:text-orange-600 ">
+            Products
+          </div>
+          <div class="ml-4 items-center ">
+            <CustomPagination v-model:currentPage="currentPage" :totalPages="totalPages" />
+  
+          </div>
+
         </div>
+       
         <div
           class="
-          md:w-36 w-14 bg-orange-500 hover:bg-orange-600 transition-transform hover:scale-105 text-white px-2 rounded-lg py-1 m-2 ml-2 flex ">
-          <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="  transition-transform hover:rotate-90 w-6 h-6">
-            <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
-          </svg>
-
+          rotate-svg
+          transition-transform hover:-translate-x-5
+          md:w-36 w-14 bg-orange-500 hover:bg-orange-600  hover:scale-105 text-white px-2 rounded-lg py-1 m-2 ml-2 flex ">
+          <div>
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class=" now-rotate-svg   transition-transform w-6 h-6">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+  
+          </div>
+          
           <button class="hidden md:block">
             New Product
           </button>
         </div>
       </div>
-
       <div name="panel" class=" mt-1 bg-orange-50 absolute lg:left-60 rounded-lg border-orange-300 w-auto  border-2 ">
-
         <div class=" p-2  ">
           <div class="flex justify-between  pb-3">
+          <div class="flex">
             <div class="flex items-center ">
-              <span class="whitespace-nowrap mr-3 text-orange-500">Per Page</span>
+              <span class="whitespace-nowrap mr-3 text-orange-500 hidden md:block">Per Page</span>
               <select @change="getProducts(null)" v-model="perPage"
-                class="appearance-none relative block w-24 px-3 py-2 border border-orange-300 placeholder-orange-500 text-orange-900 rounded-lg focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm">
+                class=" hidden md:block appearance-none relative  w-24 px-3 py-2 border border-orange-300 placeholder-orange-500 text-orange-900 rounded-lg focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm">
                 <option value="5">5</option>
                 <option value="10">10</option>
                 <option value="20">20</option>
@@ -115,6 +134,10 @@ const products = [
               </select>
               <!-- <span class="ml-3 hidden md:block">Found {{ products.total }} products</span> -->
             </div>
+            
+           
+          </div>
+
             <div>
               <input v-model="search" @change="getProducts(null)"
                 class="appearance-none relative block w-32 lg:w-48 px-3 py-2 border border-orange-300 placeholder-orange-500 text-gray-900 rounded-lg focus:outline-none focus:ring-orange-500 focus:border-orange-500 focus:z-10 sm:text-sm"
@@ -147,7 +170,7 @@ const products = [
         </div>
 
         <ul role="list" class="divide-y divide-orange-300 ml-5 mr-5 overflow-y-scroll overflow-x-hidden h-[500px] scrollbar text-orange-600">
-          <li v-for="product in products" :key="product.ID" class="cursor-pointer flex justify-between gap-x-6 py-5 transition-transform hover:scale-105 ease-in-out duration-300 hover:text-orange-700">
+          <li v-for="product in products" :key="product.ID" class="cursor-pointer hover:bg-orange-100 flex justify-between gap-x-6 py-5 transition-transform hover:scale-105 ease-in duration-200 hover:text-orange-700">
             <div class="flex justify-between items-center">
               <div class=" ml-8 w-20   hidden md:block">
                 {{ product.ID }}
@@ -188,13 +211,19 @@ const products = [
             </div>
           </li>
         </ul>
+       
       </div>
+     
+       
     </div>
-
+   
   </AppLayout>
 </template>
 <style>
 
+.rotate-svg:hover .now-rotate-svg {
+  transform: rotate(-90deg);
+}
 /* Hide the scroll bar */
 .scrollbar::-webkit-scrollbar {
     width: 0.4em;
