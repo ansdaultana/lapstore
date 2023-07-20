@@ -17,9 +17,11 @@ return new class extends Migration
             $table->string('title',2000);
             $table->string('slug',2000);
             $table->string('image',2000)->nullable();
+            $table->decimal('quantity',10);
             $table->string('image_mime')->nullable();
             $table->string('image_size')->nullable();
             $table->longText('description')->nullable();
+            $table->foreignId('category_id')->references('id')->on('category');
             $table->decimal('price',10,2);
             $table->foreignIdFor(User::class,'created_by')->nullable();
             $table->foreignIdFor(User::class,'updated_by')->nullable();
