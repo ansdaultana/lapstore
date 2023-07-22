@@ -17,12 +17,10 @@ const user = ref({
 const login = async () => {
   try {
     loading.value = true;
-    const token  = await store.dispatch('login', user);
- //   console.log('Token:', token.name);
+    await store.dispatch('login', user);
     loading.value = false;
   } catch (error) {
     loading.value = false;
-    console.log(error.response.data.message);
     errorMsg.value = error.response.data.message;
   }
 };

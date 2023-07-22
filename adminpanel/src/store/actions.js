@@ -6,7 +6,7 @@ export async function login({ commit }, user) {
 
     try {
         await axios.get('http://localhost:8000/sanctum/csrf-cookie');
-        const response = await axios.post('http://localhost:8000/login',
+        const response = await axios.post('http://localhost:8000/api/login',
             {
                 email: user.value.email,
                 password: user.value.password,
@@ -21,17 +21,36 @@ export async function login({ commit }, user) {
 
     } catch (error) {
 
+        throw error;
     }
-
-
 }
 
+export async function newProduct ({commit},product)
+{
+    try {
+        await axios.get('http://localhost:8000/sanctum/csrf-cookie');
+        const response = await axios.post('http://localhost:8000/api/new-product',
+        {
+            title: product.title,
+            description: product.description,
+            price: product.price,
+            slidder: product.slidder,
+            category: product.category,
+            quantity: product.quantity,
+            photos: product.photos, // Add the images directly to the form data
+          
+           });
+           console.log(response);
+           return response.data;
+    } catch (error) {
+      throw error;
+    }
+}
 
 export async function logout({ commit }) {
     try {
-        console.log('in logout');
         await axios.get('http://localhost:8000/sanctum/csrf-cookie');
-        const response = await axios.post('http://localhost:8000/logout');
+        const response = await axios.post('http://localhost:8000/api/logout');
         if (response.data) {
             commit('setToken', '');
             commit('setUser', {});

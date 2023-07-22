@@ -6,8 +6,6 @@ import store from '../store/index.js';
 const userName = computed(() => store.getters.userName);
 const userToken = computed(() => store.getters.userToken);
 
-console.log("in Navbar:" + userName.value)
-console.log("in Navbar:" + userToken.value)
 
 const logout = async () => {
 

@@ -3,18 +3,19 @@
 import { ref } from 'vue';
 import AppLayout from '../Layouts/AppLayout.vue'
 import animation from '../assets/animation_1.json'
+import router from '../router/index.js'
+import store from '../store/index.js'
+const imagesurlforview = ref([
+]);
 const images = ref([
 ]);
 const acceptedImageTypes = ['image/jpeg', 'image/png',];
 const isDragging = ref(false);
-
-const draggedImageIndex = ref(null);
-
 const SelectFiles = () => {
     const fileInput = document.getElementById('fileInput');
     fileInput.click();
 }
-const onFileInput = (event) => {
+const onFileInput = async (event) => {
     const files = [...event.target.files];
     if (files.length === 0) {
         return
@@ -26,19 +27,13 @@ const onFileInput = (event) => {
 
         if (acceptedImageTypes.includes(file.type)) {
             const imageUrl = URL.createObjectURL(file);
-            const title = file.name.split('.').slice(0, -1).join('.'); // Extract filename without extension
-                images.value.push({ url: imageUrl, title: title });
-            };
-        }
+            const title = file.name.split('.').slice(0, -1).join('.');
+            images.value.push(file);
+            imagesurlforview.value.push({ url: imageUrl, title: title });
+        };
     }
+}
 
-const onDragStart = (index) => {
-    draggedImageIndex.value = index;
-};
-
-const onDragEnd = () => {
-    draggedImageIndex.value = null;
-};
 
 const onDragover = (event) => {
     event.preventDefault()
@@ -47,7 +42,7 @@ const onDragover = (event) => {
 
 }
 
-const onDrop = (event) => {
+const onDrop = async (event) => {
     event.preventDefault();
     isDragging.value = false;
     const files = [...event.dataTransfer.files];
@@ -60,17 +55,62 @@ const onDrop = (event) => {
         if (acceptedImageTypes.includes(file.type)) {
             const imageUrl = URL.createObjectURL(file);
             const title = file.name.split('.').slice(0, -1).join('.'); // Extract filename without extension
-                images.value.push({ url: imageUrl, title: title });
-          
+            images.value.push(file);
+            imagesurlforview.value.push({ url: imageUrl, title: title });
+
         }
     }
 };
 const deleteUploaded = (image) => {
-  const imageIndex = images.value.indexOf(image);
-  if (imageIndex !== -1) {
-    images.value.splice(imageIndex, 1);
-  }
+    const imageIndex = imagesurlforview.value.indexOf(image);
+    if (imageIndex !== -1) {
+        imagesurlforview.value.splice(imageIndex, 1);
+    }
 };
+const unsignedUploadPreset = 'ml_default';
+const cloudName = 'ddrivhxfq';
+
+const form = ref({
+    title: '',
+    description: '',
+    price: '',
+    slidder: false,
+    category: '',
+    quantity: '',
+
+});
+const validationErrors = ref()
+const AddNewProduct = async () => {
+
+    try {
+        const formData = {
+            title: form.value.title,
+            description: form.value.description,
+            price: form.value.price,
+            slidder: form.value.slidder,
+            category: form.value.category,
+            quantity: form.value.quantity,
+            photos: images.value, // Add the images directly to the form data
+        };
+        await store.dispatch('newProduct', formData);
+        form.value.title = '';
+        form.value.description = '';
+        form.value.price = '';
+        form.value.slidder = false;
+        form.value.category = '';
+        form.value.quantity = '';
+        images.value = [];
+        imagesurlforview.value = [];
+    } catch (error) {
+        if (error.response && error.response.data && error.response.data.errors) {
+            validationErrors.value = error.response.data.errors;
+            console.log(validationErrors.value);
+        } else {
+            alert('An error occurred while adding the product.');
+        }
+    }
+}
+
 </script>
 <template>
     <AppLayout>
@@ -78,7 +118,6 @@ const deleteUploaded = (image) => {
             <div class="m-2">
                 Add Product
             </div>
-            <vue-lottie :animation-data="animation" :autoplay="true" :loop="true"></vue-lottie>
             <div class=" ml-2 mr-2 border-2 border-gray-200 h-[calc(100vh - 300px)]">
                 <div class="w-auto divide-x-2 flex  shadow-md">
                     <div class="w-1/3">
@@ -108,10 +147,9 @@ const deleteUploaded = (image) => {
                                 </div>
                             </div>
                         </div>
-                        <div v-if="images.length > 0" name="pics " class="">
+                        <div v-if="imagesurlforview.length > 0" name="pics " class="">
 
-                            <div class="mt-2 " v-for="(image, index) in images" :key="index" draggable="true"
-                                @dragstart="onDragStart(index)" @dragend="onDragEnd" @drop="onDrop">
+                            <div class="mt-2 " v-for="(image, index) in imagesurlforview" :key="index">
 
                                 <div
                                     class="image border-dashed border-2 h-14 md:h-20 hover:shadow-lg hover:bg-slate-200  transition-transform hover:scale-103 ease-in-out  duration-300  m-1 bg-slate-100  flex justify-between">
@@ -122,7 +160,7 @@ const deleteUploaded = (image) => {
 
                                         </div>
                                         <div class="m-2 md:block hidden">
-                                           {{ image.title }}
+                                            {{ image.title }}
                                         </div>
 
                                     </div>
@@ -142,55 +180,79 @@ const deleteUploaded = (image) => {
                     </div>
                     <div class="w-full md:w-1/2">
                         <div class="bg-gray-100  w-full">
-                            <form class="bg-white p-4 md:px-14 md:py-8  rounded-md">
+                            <form @submit.prevent="AddNewProduct" class="bg-white p-4 md:px-14 md:py-8  rounded-md">
                                 <div class="mb-4">
                                     <label for="product-title" class="block text-gray-700 font-semibold mb-2">Product
                                         Title:</label>
-                                    <input type="text" id="product-title" name="product_title"
-                                        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-orange-500"
-                                        required>
+                                    <input type="text" id="product-title" name="product_title" v-model="form.title"
+                                        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-orange-500" required>
+
+                                    <p v-if="validationErrors && validationErrors.title" class="text-xs text-red-400 mt-1">
+                                        {{ validationErrors.title[0] }}
+                                    </p>
                                 </div>
 
                                 <div class="mb-2">
                                     <label for="product-price" class="block text-gray-700 font-semibold mb-2">Price:</label>
-                                    <input type="number" id="product-price" name="product_price" step="100"
+                                    <input type="number" id="product-price" name="product_price" step="1"
+                                        v-model="form.price"
                                         class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-orange-500"
                                         required>
+                                    <p v-if="validationErrors && validationErrors.price" class="text-xs text-red-400 mt-1">
+                                        {{ validationErrors.price[0] }}
+                                    </p>
                                 </div>
                                 <div class="mb-2">
                                     <label for="slidder" class="text-gray-700 text-sm font-semibold mb-2 mr-3">Add To the
                                         slidder:</label>
-                                    <input type="checkbox">
-
+                                    <input type="checkbox" v-model="form.slidder">
+                                    <p v-if="validationErrors && validationErrors.slidder"
+                                        class="text-xs text-red-400 mt-1">
+                                        {{ validationErrors.slidder[0] }}
+                                    </p>
                                 </div>
-                                <div class="mb-4">
+                                <div class="">
                                     <label for="product-description"
                                         class="block text-gray-700 font-semibold mb-2">Description:</label>
                                     <textarea id="product-description" name="product_description" rows="4"
+                                        v-model="form.description"
                                         class="w-full px-4 py-2 border rounded-md resize-none focus:outline-none focus:border-orange-500"
                                         required></textarea>
+                                    <p v-if="validationErrors && validationErrors.description"
+                                        class="text-xs text-red-400 mt-1">
+                                        {{ validationErrors.description[0] }}
+                                    </p>
                                 </div>
 
                                 <div class="mb-4">
                                     <label for="product-category"
                                         class="block text-gray-700 font-semibold mb-2">Category:</label>
-                                    <select id="product-category" name="product_category"
+                                    <select id="product-category" name="product_category" v-model="form.category"
                                         class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-orange-500"
                                         required>
                                         <option value="">Select a category</option>
-                                        <option value="electronics">Electronics</option>
-                                        <option value="clothing">Clothing</option>
-                                        <option value="home">Home &amp; Kitchen</option>
+                                        <option value="Laptop"> Laptop</option>
+                                        <option value="Accessories">Accessories</option>
+                                        <option value="Others">Others</option>
                                         <!-- Add more options as needed -->
                                     </select>
+                                    <p v-if="validationErrors && validationErrors.category"
+                                        class="text-xs text-red-400 mt-1">
+                                        {{ validationErrors.category[0] }}
+                                    </p>
                                 </div>
 
                                 <div class="mb-2">
                                     <label for="product-quantity"
                                         class="block text-gray-700 font-semibold mb-2">Quantity:</label>
                                     <input type="number" id="product-quantity" name="product_quantity" min="1"
+                                        v-model="form.quantity"
                                         class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-orange-500"
                                         required>
+                                    <p v-if="validationErrors && validationErrors.quantity"
+                                        class="text-xs text-red-400 mt-1">
+                                        {{ validationErrors.quantity[0] }}
+                                    </p>
                                 </div>
 
                                 <button type="submit"
@@ -204,5 +266,4 @@ const deleteUploaded = (image) => {
             </div>
         </div>
 
-    </AppLayout>
-</template>
+    </AppLayout></template>

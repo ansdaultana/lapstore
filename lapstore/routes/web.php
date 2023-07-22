@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -17,10 +18,12 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('welcome');
 });
-Route::post('/logout', [AdminAuthController::class, 'logout']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AdminAuthController::class, 'getUser']);
+Route::post('/api/logout', [AdminAuthController::class, 'logout']);
+Route::post('/api/new-product',[ProductController::class,'create']);
+
 });
 
-Route::post('/login', [AdminAuthController::class, 'login']);
+Route::post('/api/login', [AdminAuthController::class, 'login']);
