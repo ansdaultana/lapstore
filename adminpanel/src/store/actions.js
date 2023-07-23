@@ -27,6 +27,7 @@ export async function login({ commit }, user) {
 
 export async function newProduct ({commit},product)
 {
+    console.log(product.photos)
     try {
         await axios.get('http://localhost:8000/sanctum/csrf-cookie');
         const response = await axios.post('http://localhost:8000/api/new-product',

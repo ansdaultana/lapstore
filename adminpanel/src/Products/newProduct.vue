@@ -30,7 +30,11 @@ const onFileInput = async (event) => {
             const title = file.name.split('.').slice(0, -1).join('.');
             images.value.push(file);
             imagesurlforview.value.push({ url: imageUrl, title: title });
-        };
+        }
+        else
+        {
+            ImagesError.value='Image is not in Jpeg or Png format.'
+        }
     }
 }
 
@@ -59,6 +63,10 @@ const onDrop = async (event) => {
             imagesurlforview.value.push({ url: imageUrl, title: title });
 
         }
+        else
+        {
+            ImagesError.value='Image is not in Jpeg or Png format.'
+        }
     }
 };
 const deleteUploaded = (image) => {
@@ -80,6 +88,7 @@ const form = ref({
 
 });
 const validationErrors = ref()
+const ImagesError=ref()
 const AddNewProduct = async () => {
 
     try {
@@ -90,8 +99,9 @@ const AddNewProduct = async () => {
             slidder: form.value.slidder,
             category: form.value.category,
             quantity: form.value.quantity,
-            photos: images.value, // Add the images directly to the form data
+            photos: images.value, 
         };
+        
         await store.dispatch('newProduct', formData);
         form.value.title = '';
         form.value.description = '';
@@ -121,6 +131,7 @@ const AddNewProduct = async () => {
             <div class=" ml-2 mr-2 border-2 border-gray-200 h-[calc(100vh - 300px)]">
                 <div class="w-auto divide-x-2 flex  shadow-md">
                     <div class="w-1/3">
+                     
                         <div @dragover.prevent="onDragover" @dragleave.prevent="onDragleave" @drop.prevent="onDrop"
                             class="
 
@@ -147,6 +158,11 @@ const AddNewProduct = async () => {
                                 </div>
                             </div>
                         </div>
+
+                      
+                         <div v-if="ImagesError" class="text-red-400 text-sm ml-2" >
+                            {{ ImagesError.value }}
+                        </div> 
                         <div v-if="imagesurlforview.length > 0" name="pics " class="">
 
                             <div class="mt-2 " v-for="(image, index) in imagesurlforview" :key="index">
@@ -180,12 +196,15 @@ const AddNewProduct = async () => {
                     </div>
                     <div class="w-full md:w-1/2">
                         <div class="bg-gray-100  w-full">
-                            <form @submit.prevent="AddNewProduct" class="bg-white p-4 md:px-14 md:py-8  rounded-md">
+                            <form @submit.prevent="AddNewProduct" class="bg-white p-4 md:px-14 md:py-8  rounded-md"
+                            
+                            enctype="multipart/form-data">
                                 <div class="mb-4">
                                     <label for="product-title" class="block text-gray-700 font-semibold mb-2">Product
                                         Title:</label>
                                     <input type="text" id="product-title" name="product_title" v-model="form.title"
-                                        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-orange-500" required>
+                                        class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-orange-500"
+                                         >
 
                                     <p v-if="validationErrors && validationErrors.title" class="text-xs text-red-400 mt-1">
                                         {{ validationErrors.title[0] }}
@@ -197,7 +216,7 @@ const AddNewProduct = async () => {
                                     <input type="number" id="product-price" name="product_price" step="1"
                                         v-model="form.price"
                                         class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-orange-500"
-                                        required>
+                                         >
                                     <p v-if="validationErrors && validationErrors.price" class="text-xs text-red-400 mt-1">
                                         {{ validationErrors.price[0] }}
                                     </p>
@@ -217,7 +236,7 @@ const AddNewProduct = async () => {
                                     <textarea id="product-description" name="product_description" rows="4"
                                         v-model="form.description"
                                         class="w-full px-4 py-2 border rounded-md resize-none focus:outline-none focus:border-orange-500"
-                                        required></textarea>
+                                         ></textarea>
                                     <p v-if="validationErrors && validationErrors.description"
                                         class="text-xs text-red-400 mt-1">
                                         {{ validationErrors.description[0] }}
@@ -229,7 +248,7 @@ const AddNewProduct = async () => {
                                         class="block text-gray-700 font-semibold mb-2">Category:</label>
                                     <select id="product-category" name="product_category" v-model="form.category"
                                         class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-orange-500"
-                                        required>
+                                         >
                                         <option value="">Select a category</option>
                                         <option value="Laptop"> Laptop</option>
                                         <option value="Accessories">Accessories</option>
@@ -248,7 +267,7 @@ const AddNewProduct = async () => {
                                     <input type="number" id="product-quantity" name="product_quantity" min="1"
                                         v-model="form.quantity"
                                         class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-orange-500"
-                                        required>
+                                         >
                                     <p v-if="validationErrors && validationErrors.quantity"
                                         class="text-xs text-red-400 mt-1">
                                         {{ validationErrors.quantity[0] }}
@@ -266,4 +285,5 @@ const AddNewProduct = async () => {
             </div>
         </div>
 
-    </AppLayout></template>
+    </AppLayout>
+</template>
