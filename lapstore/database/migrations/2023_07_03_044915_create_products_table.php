@@ -21,7 +21,7 @@ return new class extends Migration
        //     $table->string('image_mime')->nullable();
          //   $table->string('image_size')->nullable();
             $table->longText('description')->nullable();
-            $table->foreignId('category_id')->references('id')->on('category');
+            $table->foreignId('category_id')->references('id')->on('categories');
             $table->decimal('price',10,2);
             $table->foreignIdFor(User::class,'created_by')->nullable();
             $table->foreignIdFor(User::class,'updated_by')->nullable();

@@ -5,6 +5,7 @@ import AppLayout from '../Layouts/AppLayout.vue'
 import animation from '../assets/animation_1.json'
 import router from '../router/index.js'
 import store from '../store/index.js'
+const isloading=ref(false);
 const imagesurlforview = ref([
 ]);
 const images = ref([
@@ -31,9 +32,8 @@ const onFileInput = async (event) => {
             images.value.push(file);
             imagesurlforview.value.push({ url: imageUrl, title: title });
         }
-        else
-        {
-            ImagesError.value='Image is not in Jpeg or Png format.'
+        else {
+            ImagesError.value = 'Image is not in Jpeg or Png format.'
         }
     }
 }
@@ -63,9 +63,8 @@ const onDrop = async (event) => {
             imagesurlforview.value.push({ url: imageUrl, title: title });
 
         }
-        else
-        {
-            ImagesError.value='Image is not in Jpeg or Png format.'
+        else {
+            ImagesError.value = 'Image is not in Jpeg or Png format.'
         }
     }
 };
@@ -88,7 +87,17 @@ const form = ref({
 
 });
 const validationErrors = ref()
-const ImagesError=ref()
+const ImagesError = ref()
+const resetform = () => {
+    form.value.title = '';
+    form.value.description = '';
+    form.value.price = '';
+    form.value.slidder = false;
+    form.value.category = '';
+    form.value.quantity = '';
+    images.value = [];
+    imagesurlforview.value = [];
+}
 const AddNewProduct = async () => {
 
     try {
@@ -99,18 +108,14 @@ const AddNewProduct = async () => {
             slidder: form.value.slidder,
             category: form.value.category,
             quantity: form.value.quantity,
-            photos: images.value, 
+            photos: images.value,
         };
-        
+        isloading.value=true;
         await store.dispatch('newProduct', formData);
-        form.value.title = '';
-        form.value.description = '';
-        form.value.price = '';
-        form.value.slidder = false;
-        form.value.category = '';
-        form.value.quantity = '';
-        images.value = [];
-        imagesurlforview.value = [];
+        isloading.value=false
+        resetform();
+        router.push({name:'app.products'});
+
     } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
             validationErrors.value = error.response.data.errors;
@@ -131,7 +136,7 @@ const AddNewProduct = async () => {
             <div class=" ml-2 mr-2 border-2 border-gray-200 h-[calc(100vh - 300px)]">
                 <div class="w-auto divide-x-2 flex  shadow-md">
                     <div class="w-1/3">
-                     
+
                         <div @dragover.prevent="onDragover" @dragleave.prevent="onDragleave" @drop.prevent="onDrop"
                             class="
 
@@ -159,10 +164,10 @@ const AddNewProduct = async () => {
                             </div>
                         </div>
 
-                      
-                         <div v-if="ImagesError" class="text-red-400 text-sm ml-2" >
+
+                        <div v-if="ImagesError" class="text-red-400 text-sm ml-2">
                             {{ ImagesError.value }}
-                        </div> 
+                        </div>
                         <div v-if="imagesurlforview.length > 0" name="pics " class="">
 
                             <div class="mt-2 " v-for="(image, index) in imagesurlforview" :key="index">
@@ -197,14 +202,13 @@ const AddNewProduct = async () => {
                     <div class="w-full md:w-1/2">
                         <div class="bg-gray-100  w-full">
                             <form @submit.prevent="AddNewProduct" class="bg-white p-4 md:px-14 md:py-8  rounded-md"
-                            
-                            enctype="multipart/form-data">
+                                enctype="multipart/form-data">
                                 <div class="mb-4">
                                     <label for="product-title" class="block text-gray-700 font-semibold mb-2">Product
                                         Title:</label>
                                     <input type="text" id="product-title" name="product_title" v-model="form.title"
                                         class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-orange-500"
-                                         >
+                                        required>
 
                                     <p v-if="validationErrors && validationErrors.title" class="text-xs text-red-400 mt-1">
                                         {{ validationErrors.title[0] }}
@@ -216,7 +220,7 @@ const AddNewProduct = async () => {
                                     <input type="number" id="product-price" name="product_price" step="1"
                                         v-model="form.price"
                                         class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-orange-500"
-                                         >
+                                        required>
                                     <p v-if="validationErrors && validationErrors.price" class="text-xs text-red-400 mt-1">
                                         {{ validationErrors.price[0] }}
                                     </p>
@@ -236,7 +240,7 @@ const AddNewProduct = async () => {
                                     <textarea id="product-description" name="product_description" rows="4"
                                         v-model="form.description"
                                         class="w-full px-4 py-2 border rounded-md resize-none focus:outline-none focus:border-orange-500"
-                                         ></textarea>
+                                        required></textarea>
                                     <p v-if="validationErrors && validationErrors.description"
                                         class="text-xs text-red-400 mt-1">
                                         {{ validationErrors.description[0] }}
@@ -248,7 +252,7 @@ const AddNewProduct = async () => {
                                         class="block text-gray-700 font-semibold mb-2">Category:</label>
                                     <select id="product-category" name="product_category" v-model="form.category"
                                         class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-orange-500"
-                                         >
+                                        required>
                                         <option value="">Select a category</option>
                                         <option value="Laptop"> Laptop</option>
                                         <option value="Accessories">Accessories</option>
@@ -267,14 +271,16 @@ const AddNewProduct = async () => {
                                     <input type="number" id="product-quantity" name="product_quantity" min="1"
                                         v-model="form.quantity"
                                         class="w-full px-4 py-2 border rounded-md focus:outline-none focus:border-orange-500"
-                                         >
+                                        required>
                                     <p v-if="validationErrors && validationErrors.quantity"
                                         class="text-xs text-red-400 mt-1">
                                         {{ validationErrors.quantity[0] }}
                                     </p>
                                 </div>
 
-                                <button type="submit"
+                                <button 
+                                :disabled="isloading" :class="{ 'cursor-not-allowed': isloading, }"
+                                type="submit"
                                     class="mt-2 bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600">Submit</button>
                             </form>
                         </div>
