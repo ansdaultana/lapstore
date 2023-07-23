@@ -13,12 +13,17 @@ class ProductController extends Controller
 
     
     $validate = $request->validate([
-        'images' => 'array',
+        'photos'=>'array|required',
+        'photos.*'=>'image'
     ]);
-   $imageUrls = $request->input('images');
     
-    return response([
-        "images" => $imageUrls,
+    if ($request->file('photos.0')) {
+       
+        $imageUrl =  'yes';
+    }
+
+
+    return response([ "image" => $imageUrl ?? null,
         "message"=>"request received successfully",
     ],200);
  }

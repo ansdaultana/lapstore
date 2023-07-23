@@ -40,7 +40,12 @@ export async function newProduct ({commit},product)
             quantity: product.quantity,
             photos: product.photos, // Add the images directly to the form data
           
-           });
+           },
+           {
+            headers: {
+              'Content-Type': 'multipart/form-data', // Important for handling files on the server
+            },
+        });
            console.log(response);
            return response.data;
     } catch (error) {
