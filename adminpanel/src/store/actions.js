@@ -52,11 +52,11 @@ export async function newProduct({ commit }, product) {
 export async function getProducts({ commit }, info) {
 
     try {
-
         const response = await axios.get('http://localhost:8000/api/get-Products', {
             params: {
                 currentPage: info.value.currentPage,
-                perPage: info.value.perPage
+                perPage: info.value.perPage,
+                search:info.value.search
             },
         },
         );

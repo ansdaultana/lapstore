@@ -12,7 +12,8 @@ const goToNewProduct = () => {
 
 const info=ref({
   currentPage:1,
-  perPage:10
+  perPage:10,
+  search:''
 });
 
 const products=computed(()=>store.getters.Products);
@@ -114,7 +115,7 @@ const formatUpdatedAt = (date) => {
             </div>
 
             <div>
-              <input v-model="search" @change="getProducts(null)"
+              <input v-model="info.search" @input="getProducts"
                 class="appearance-none relative block w-32 lg:w-48 px-3 py-2 border border-slate-300 placeholder-slate-500 text-gray-900 rounded-lg focus:outline-none focus:ring-slate-500 focus:border-slate-500 focus:z-10 sm:text-sm"
                 placeholder="Type to Search products">
             </div>

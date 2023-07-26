@@ -68,19 +68,30 @@ class ProductController extends Controller
 
         $validate = $request->validate([
             'perPage' => 'required',
-            'currentPage' => 'required'
+            'currentPage' => 'required',
+            'search' => 'nullable|string'
         ]);
         if (auth()->check()) {
 
-            $perpage = $validate['perPage'];
+            $perPage = $validate['perPage'];
             $currentPage = $validate['currentPage'];
+            $search = $validate['search'] ?? '';
 
-            $Products = Product::with('images')->paginate($perpage,['*'],'page',$currentPage);
-
+            if (!empty($search)) {
+                $Products = Product::with('images')
+                ->where(function ($query) use ($search)
+                {
+                    $query->where('title', 'like', '%' . $search . '%')
+                    ->orWhere('description', 'like', '%' . $search . '%');
+                }) 
+                ->paginate($perPage, ['*'], 'page', $currentPage);
+            } else {
+                $Products = Product::with('images')->paginate($perPage, ['*'], 'page', $currentPage);
+            }
         }
         return response([
             "Products" => $Products,
-            "total" => $Products->total(), 
+            "total" => $Products->total(),
         ]);
     }
     //
