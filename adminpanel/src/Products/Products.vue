@@ -6,6 +6,8 @@ import router from '../router';
 import store from '../store/index.js'
 import CustomPagination from '../components/CustomPagination.vue';
 
+const openmodal = ref(false);
+const slugToBeDeleted = ref('')
 const goToNewProduct = () => {
   router.push({ name: 'newproduct' });
 
@@ -36,6 +38,21 @@ const getProducts = async () => {
     console.log(error);
   }
 }
+const deleteModal = (slug) => {
+  ToggleModal()
+  slugToBeDeleted.value = slug
+}
+const deleteProduct = async () => {
+  try {
+
+    const response = await store.dispatch('deleteProduct', slugToBeDeleted.value);
+    getProducts()
+    ToggleModal()
+  } catch (error) {
+    console.log(error);
+
+  }
+}
 
 const updatecurrentPage = (page) => {
   info.value.currentPage = page;
@@ -44,7 +61,7 @@ const updatecurrentPage = (page) => {
 }
 
 const EditProduct = (slug) => {
-router.push({path:`/app/edit-product/${slug}`})
+  router.push({ path: `/app/edit-product/${slug}` })
 }
 const formatUpdatedAt = (date) => {
   const updatedDate = new Date(date);
@@ -67,9 +84,12 @@ const formatUpdatedAt = (date) => {
   }
 }
 
+const ToggleModal = () => { openmodal.value = !openmodal.value }
+
 </script>
 <template>
   <AppLayout>
+
     <div class="relative flex-col ">
 
       <div class=" flex justify-between ">
@@ -99,6 +119,7 @@ const formatUpdatedAt = (date) => {
           </button>
         </div>
       </div>
+
       <div name="panel" class=" mr-1 absolute  rounded-md border-slate-300 w-full h-full   border-t ">
         <div class=" p-2 bg-slate-50 ">
           <div class="flex justify-between  pb-3  ">
@@ -189,7 +210,7 @@ const formatUpdatedAt = (date) => {
                     d="M16.862 4.487l1.687-1.688a1.875 1.875 0 112.652 2.652L10.582 16.07a4.5 4.5 0 01-1.897 1.13L6 18l.8-2.685a4.5 4.5 0 011.13-1.897l8.932-8.931zm0 0L19.5 7.125M18 14v4.75A2.25 2.25 0 0115.75 21H5.25A2.25 2.25 0 013 18.75V8.25A2.25 2.25 0 015.25 6H10" />
                 </svg>
               </div>
-              <div
+              <div @click="deleteModal(product.slug)"
                 class="bg-red-500 p-2 rounded-lg transition-transform hover:scale-103 ease-in-out duration-300 cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                   stroke="currentColor" class="w-5 h-5 text-white">
@@ -209,6 +230,41 @@ const formatUpdatedAt = (date) => {
 
     </div>
 
+    <div v-if="openmodal" id="popup-modal" tabindex="-1" class="
+    transition-opacity duration-800 
+    z-50  p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
+      :class="{ 'opacity-100 pointer-events-auto': openmodal, 'opacity-0 pointer-events-none': !openmodal }">
+      <div class="relative w-full max-w-md max-h-full">
+        <div class="relative bg-white rounded-lg shadow dark:bg-gray-700">
+          <button @click="ToggleModal" type="button"
+            class="absolute top-3 right-2.5 text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center dark:hover:bg-gray-600 dark:hover:text-white"
+            data-modal-hide="popup-modal">
+            <svg class="w-3 h-3" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 14 14">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="m1 1 6 6m0 0 6 6M7 7l6-6M7 7l-6 6" />
+            </svg>
+            <span class="sr-only">Close modal</span>
+          </button>
+          <div class="p-6 text-center">
+            <svg class="mx-auto mb-4 text-gray-400 w-12 h-12 dark:text-gray-200" aria-hidden="true"
+              xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 20">
+              <path stroke="currentColor" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                d="M10 11V6m0 8h.01M19 10a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+            </svg>
+            <h3 class="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">Are you sure you want to delete this
+              product?</h3>
+            <button @click.prevent="deleteProduct" data-modal-hide="popup-modal" type="button"
+              class="text-white bg-red-600 hover:bg-red-800 focus:ring-4 focus:outline-none focus:ring-red-300 dark:focus:ring-red-800 font-medium rounded-lg text-sm inline-flex items-center px-5 py-2.5 text-center mr-2">
+              Yes, I'm sure
+            </button>
+            <button @click="ToggleModal" data-modal-hide="popup-modal" type="button"
+              class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-gray-200 rounded-lg border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10 dark:bg-gray-700 dark:text-gray-300 dark:border-gray-500 dark:hover:text-white dark:hover:bg-gray-600 dark:focus:ring-gray-600">No,
+              cancel</button>
+
+          </div>
+        </div>
+      </div>
+    </div>
   </AppLayout>
 </template>
 <style>
@@ -233,5 +289,16 @@ const formatUpdatedAt = (date) => {
 /* Optional: Add hover styles for the thumb */
 .scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: slategray;
+}
+
+#popup-modal {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: blur(1px);
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 </style>

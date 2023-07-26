@@ -79,12 +79,11 @@ class ProductController extends Controller
 
             if (!empty($search)) {
                 $Products = Product::with('images')
-                ->where(function ($query) use ($search)
-                {
-                    $query->where('title', 'like', '%' . $search . '%')
-                    ->orWhere('description', 'like', '%' . $search . '%');
-                }) 
-                ->paginate($perPage, ['*'], 'page', $currentPage);
+                    ->where(function ($query) use ($search) {
+                        $query->where('title', 'like', '%' . $search . '%')
+                            ->orWhere('description', 'like', '%' . $search . '%');
+                    })
+                    ->paginate($perPage, ['*'], 'page', $currentPage);
             } else {
                 $Products = Product::with('images')->paginate($perPage, ['*'], 'page', $currentPage);
             }
@@ -99,19 +98,43 @@ class ProductController extends Controller
     {
 
 
-        $validate=$request->validate([
-            "slug"=>'required|string'
+        $validate = $request->validate([
+            "slug" => 'required|string'
         ]);
         if (auth()->check()) {
-            $slug=$validate['slug'];
-$Product=Product::with('category','images')->where('slug',$slug)->first();
+            $slug = $validate['slug'];
+            $Product = Product::with('category', 'images')->where('slug', $slug)->first();
 
         }
         return response(
             [
-                "Product"=>$Product
+                "Product" => $Product
             ]
-            );
+        );
+    }
+
+
+    public function destroy(Request $request, $slug)
+    {
+
+        // $slug = $validate['slug'];
+
+        if (auth()->check()) {
+             $product = Product::where('slug', $slug)->first();
+             if ($product) {
+                 $product->delete();
+             } else {
+                 return response([
+                     'Unuccessful' => 'product not found'
+                 ]);
+             }
+         }
+
+
+
+        return response([
+            'Successful' => $slug
+        ]);
     }
     //
 }

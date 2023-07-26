@@ -57,7 +57,7 @@ export async function getProducts({ commit }, info) {
             params: {
                 currentPage: info.value.currentPage,
                 perPage: info.value.perPage,
-                search:info.value.search
+                search: info.value.search
             },
         },
         );
@@ -69,24 +69,37 @@ export async function getProducts({ commit }, info) {
         throw error;
     }
 }
-export async function GetProductBySlug({commit},slug)
-{
+export async function GetProductBySlug({ commit }, slug) {
     try {
-        const response=await axios.get('http://localhost:8000/api/get-product/:{slug}',{
-            params:{
-                slug:slug.value
+        const response = await axios.get(`http://localhost:8000/api/get-product/${slug.value}`, {
+            params: {
+                slug: slug.value
             }
         })
-        if (response.data&&response.data.Product) {
-            commit('setProduct',response.data.Product);
+        if (response.data && response.data.Product) {
+            commit('setProduct', response.data.Product);
         }
         return response;
     } catch (error) {
         throw error;
     }
 }
-export async function editProduct({commit},product)
-{
+
+export async function deleteProduct({ commit }, slug) {
+console.log(slug)
+    try {
+        const response = await axios.post(`http://localhost:8000/api/delete-product/${slug}`,
+        {
+            params: {
+                slug: slug
+            }
+        });
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+export async function editProduct({ commit }, product) {
     console.log(product)
 }
 export async function logout({ commit }) {
