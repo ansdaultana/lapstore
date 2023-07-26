@@ -24,6 +24,7 @@ Route::middleware('auth:sanctum')->group(function () {
 Route::post('/api/logout', [AdminAuthController::class, 'logout']);
 Route::post('/api/new-product',[ProductController::class,'create']);
 Route::get('/api/get-Products',[ProductController::class,'all']);
+Route::get('/api/get-product/:{slug}',[ProductController::class,'get']);
 
 });
 

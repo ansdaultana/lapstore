@@ -94,5 +94,24 @@ class ProductController extends Controller
             "total" => $Products->total(),
         ]);
     }
+
+    public function get(Request $request)
+    {
+
+
+        $validate=$request->validate([
+            "slug"=>'required|string'
+        ]);
+        if (auth()->check()) {
+            $slug=$validate['slug'];
+$Product=Product::with('category','images')->where('slug',$slug)->first();
+
+        }
+        return response(
+            [
+                "Product"=>$Product
+            ]
+            );
+    }
     //
 }

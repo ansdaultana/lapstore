@@ -1,6 +1,7 @@
 import axiosClient from "../axios";
 import router from "../router";
 import axios from "../axios-interceptor";
+import { setProducts } from "./mutations";
 axios.defaults.withCredentials = true;
 
 export async function login({ commit }, user) {
@@ -67,6 +68,26 @@ export async function getProducts({ commit }, info) {
     } catch (error) {
         throw error;
     }
+}
+export async function GetProductBySlug({commit},slug)
+{
+    try {
+        const response=await axios.get('http://localhost:8000/api/get-product/:{slug}',{
+            params:{
+                slug:slug.value
+            }
+        })
+        if (response.data&&response.data.Product) {
+            commit('setProduct',response.data.Product);
+        }
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
+export async function editProduct({commit},product)
+{
+    console.log(product)
 }
 export async function logout({ commit }) {
     try {

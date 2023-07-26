@@ -11,7 +11,8 @@ const store =createStore(
             },
             Products:{
 
-            }
+            },
+            Product:{}
         },
 
         mutations,
@@ -20,6 +21,7 @@ const store =createStore(
             userName: (state) => state.user.data.name,
             userToken: (state) => state.user.token,
             Products:(state)=>state.Products,
+            Product:(state)=>state.Product
 
           },
     }

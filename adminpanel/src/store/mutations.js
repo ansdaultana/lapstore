@@ -17,3 +17,8 @@ export function setProducts(state, Products) {
     state.Products = Products;
 
 }
+
+export function setProduct(state,Product)
+{
+    state.Product=Product;
+}

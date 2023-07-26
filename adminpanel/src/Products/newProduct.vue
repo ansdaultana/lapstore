@@ -1,11 +1,46 @@
 <script setup>
 
-import { ref } from 'vue';
+import { computed, ref, onMounted, onUnmounted } from 'vue';
 import AppLayout from '../Layouts/AppLayout.vue'
-import animation from '../assets/animation_1.json'
+import { useRoute } from 'vue-router';
 import router from '../router/index.js'
 import store from '../store/index.js'
-const isloading=ref(false);
+const isloading = ref(false);
+const route = useRoute();
+const slug = ref('')
+const form = ref({})
+onMounted(async () => {
+    slug.value = route.params.slug;
+    if (route.name === 'editproduct') {
+        await store.dispatch('GetProductBySlug', slug)
+        form.value.title = Product.value.title,
+            form.value.description = Product.value.description,
+            form.value.price = Product.value.price,
+            form.value.slidder = Product.value.slidder,
+            form.value.category = Product.value.category.name,
+            form.value.quantity = Product.value.quantity;
+            imagesurlforview.value = Product.value.images
+            images.value = Product.value.images
+    }
+    else {
+
+        form.value.title = '',
+            form.value.description = '',
+            form.value.price = '',
+            form.value.slidder = false,
+            form.value.category = '',
+            form.value.quantity = ''
+
+    }
+
+
+})
+onUnmounted(async () => {
+    store.commit('setProduct', {})
+})
+const Product = computed(() => store.getters.Product);
+
+
 const imagesurlforview = ref([
 ]);
 const images = ref([
@@ -74,18 +109,8 @@ const deleteUploaded = (image) => {
         imagesurlforview.value.splice(imageIndex, 1);
     }
 };
-const unsignedUploadPreset = 'ml_default';
-const cloudName = 'ddrivhxfq';
 
-const form = ref({
-    title: '',
-    description: '',
-    price: '',
-    slidder: false,
-    category: '',
-    quantity: '',
 
-});
 const validationErrors = ref()
 const ImagesError = ref()
 const resetform = () => {
@@ -110,11 +135,11 @@ const AddNewProduct = async () => {
             quantity: form.value.quantity,
             photos: images.value,
         };
-        isloading.value=true;
+        isloading.value = true;
         await store.dispatch('newProduct', formData);
-        isloading.value=false
+        isloading.value = false
         resetform();
-        router.push({name:'app.products'});
+        router.push({ name: 'app.products' });
 
     } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
@@ -125,13 +150,55 @@ const AddNewProduct = async () => {
         }
     }
 }
+const EditProduct = async () => {
+    try {
+        const formData = {
+            title: form.value.title,
+            description: form.value.description,
+            price: form.value.price,
+            slidder: form.value.slidder,
+            category: form.value.category,
+            quantity: form.value.quantity,
+            photos: images.value,
+        };
+        isloading.value = true;
+        await store.dispatch('editProduct', formData);
+        isloading.value = false
+        resetform();
+        router.push({ name: 'app.products' });
+
+    } catch (error) {
+        if (error.response && error.response.data && error.response.data.errors) {
+            validationErrors.value = error.response.data.errors;
+            console.log(validationErrors.value);
+        } else {
+            alert('An error occurred while adding the product.');
+        }
+    }
+
+}
+const SubmitRequest = () => {
+    if (route.name === 'editproduct') {
+        EditProduct()
+    }
+    else if (route.name === 'newproduct') {
+        AddNewProduct()
+    }
+}
 
 </script>
 <template>
     <AppLayout>
         <div class="">
-            <div class="m-2">
-                Add Product
+            <div class="m-2 text-orange-500 flex" v-if="!slug">
+
+                Add New Product
+
+            </div>
+            <div class="m-2 text-orange-500 flex" v-if="slug">
+
+                Edit {{ Product.title }}
+
             </div>
             <div class=" ml-2 mr-2 border-2 border-gray-200 h-[calc(100vh - 300px)]">
                 <div class="w-auto divide-x-2 flex  shadow-md">
@@ -177,10 +244,10 @@ const AddNewProduct = async () => {
                                     <div class="flex">
                                         <div class="md:w-24 w-14  m-2  items-center flex">
                                             <img class="md:h-16
-                                    " :src="image.url">
+                                    " :src="route.name === 'newproduct' ? image.url : image.image_url">
 
                                         </div>
-                                        <div class="m-2 md:block hidden">
+                                        <div class="m-2 md:block hidden" v-if="route.name === 'newproduct'">
                                             {{ image.title }}
                                         </div>
 
@@ -201,7 +268,7 @@ const AddNewProduct = async () => {
                     </div>
                     <div class="w-full md:w-1/2">
                         <div class="bg-gray-100  w-full">
-                            <form @submit.prevent="AddNewProduct" class="bg-white p-4 md:px-14 md:py-8  rounded-md"
+                            <form @submit.prevent="SubmitRequest" class="bg-white p-4 md:px-14 md:py-8  rounded-md"
                                 enctype="multipart/form-data">
                                 <div class="mb-4">
                                     <label for="product-title" class="block text-gray-700 font-semibold mb-2">Product
@@ -278,9 +345,7 @@ const AddNewProduct = async () => {
                                     </p>
                                 </div>
 
-                                <button 
-                                :disabled="isloading" :class="{ 'cursor-not-allowed': isloading, }"
-                                type="submit"
+                                <button :disabled="isloading" :class="{ 'cursor-not-allowed': isloading, }" type="submit"
                                     class="mt-2 bg-orange-500 text-white py-2 px-4 rounded-md hover:bg-orange-600">Submit</button>
                             </form>
                         </div>

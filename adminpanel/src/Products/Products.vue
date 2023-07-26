@@ -5,8 +5,9 @@ import { computed, ref, onMounted, watch } from 'vue';
 import router from '../router';
 import store from '../store/index.js'
 import CustomPagination from '../components/CustomPagination.vue';
+
 const goToNewProduct = () => {
-  router.push({ name: 'app.newproduct' });
+  router.push({ name: 'newproduct' });
 
 }
 
@@ -40,6 +41,10 @@ const updatecurrentPage = (page) => {
   info.value.currentPage = page;
   getProducts()
   console.log(info.value.currentPage)
+}
+
+const EditProduct = (slug) => {
+router.push({path:`/app/edit-product/${slug}`})
 }
 const formatUpdatedAt = (date) => {
   const updatedDate = new Date(date);
@@ -176,7 +181,7 @@ const formatUpdatedAt = (date) => {
 
             </div>
             <div class="w-20 h-10 text-black hover:text-black justify-between  flex mr-8 ml-2 gap-3">
-              <div
+              <div @click.prevent="EditProduct(product.slug)"
                 class="bg-[#20D0FF] p-2 rounded-lg transition-transform hover:scale-103 ease-in-out duration-300 cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                   stroke="currentColor" class="w-5 h-5 text-white">
