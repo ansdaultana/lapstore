@@ -21,11 +21,12 @@
 </template>
   
 <script setup>
-import { defineProps, defineEmits } from 'vue';
+import { defineProps, defineEmits ,ref,watch} from 'vue';
 
 const { currentPage, totalPages } = defineProps(['currentPage', 'totalPages']);
 const emit = defineEmits();
 const changePage = (page) => emit('update:currentPage', page);
+
 </script>
   
 <style>

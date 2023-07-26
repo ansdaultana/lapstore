@@ -1,7 +1,7 @@
 
 <script setup>
 import AppLayout from '../Layouts/AppLayout.vue'
-import { computed, ref,onMounted } from 'vue';
+import { computed, ref, onMounted, watch } from 'vue';
 import router from '../router';
 import store from '../store/index.js'
 import CustomPagination from '../components/CustomPagination.vue';
@@ -10,52 +10,56 @@ const goToNewProduct = () => {
 
 }
 
-const info=ref({
-  currentPage:1,
-  perPage:10,
-  search:''
+const info = ref({
+  currentPage: 1,
+  perPage: 10,
+  search: ''
 });
 
-const products=computed(()=>store.getters.Products);
+const products = computed(() => store.getters.Products);
 const totalItems = ref(10);
-const totalPages = computed(() => Math.ceil(totalItems / info.value.perPage));
+const totalPages = computed(() => Math.ceil(totalItems.value / info.value.perPage));
 
-onMounted(()=>{
+onMounted(() => {
   getProducts();
 })
 
-const getProducts=async()=>
-{
+
+const getProducts = async () => {
 
   try {
-    
-    const response=await store.dispatch('getProducts',info);
-    totalItems.value=response.data.total;
-    console.log(totalItems.value)
+
+    const response = await store.dispatch('getProducts', info);
+    totalItems.value = response.data.total;
   } catch (error) {
     console.log(error);
   }
 }
 
+const updatecurrentPage = (page) => {
+  info.value.currentPage = page;
+  getProducts()
+  console.log(info.value.currentPage)
+}
 const formatUpdatedAt = (date) => {
-    const updatedDate = new Date(date);
-    const currentDate = new Date();
-    const diffInMilliseconds = Math.abs(currentDate - updatedDate);
+  const updatedDate = new Date(date);
+  const currentDate = new Date();
+  const diffInMilliseconds = Math.abs(currentDate - updatedDate);
 
-    const seconds = Math.floor(diffInMilliseconds / 1000);
-    const minutes = Math.floor(seconds / 60);
-    const hours = Math.floor(minutes / 60);
-    const days = Math.floor(hours / 24);
+  const seconds = Math.floor(diffInMilliseconds / 1000);
+  const minutes = Math.floor(seconds / 60);
+  const hours = Math.floor(minutes / 60);
+  const days = Math.floor(hours / 24);
 
-    if (days > 0) {
-        return `${days} day${days > 1 ? 's' : ''} ago`;
-    } else if (hours > 0) {
-        return `${hours} hour${hours > 1 ? 's' : ''} ago`;
-    } else if (minutes > 0) {
-        return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
-    } else {
-        return `${seconds} second${seconds !== 1 ? 's' : ''} ago`;
-    }
+  if (days > 0) {
+    return `${days} day${days > 1 ? 's' : ''} ago`;
+  } else if (hours > 0) {
+    return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+  } else if (minutes > 0) {
+    return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+  } else {
+    return `${seconds} second${seconds !== 1 ? 's' : ''} ago`;
+  }
 }
 
 </script>
@@ -98,8 +102,8 @@ const formatUpdatedAt = (date) => {
                 <span class="whitespace-nowrap mr-3 text-black hidden md:block">Per Page</span>
                 <select @change="getProducts" v-model="info.perPage"
                   class=" hidden md:block appearance-none relative  w-24 px-3 py-2 border border-slate-300 placeholder-slate-500 text-slate-900 rounded-lg focus:outline-none focus:ring-slate-500 focus:border-slate-500 focus:z-10 sm:text-sm">
+                  <option value="3">3</option>
                   <option value="5">5</option>
-                  <option value="10">10</option>
                   <option value="20">20</option>
                   <option value="50">50</option>
                   <option value="100">100</option>
@@ -107,7 +111,8 @@ const formatUpdatedAt = (date) => {
                 <!-- <span class="ml-3 hidden md:block">Found {{ products.total }} products</span> -->
               </div>
               <div class="ml-2 -mt-2 items-center ">
-                <CustomPagination v-model:currentPage="info.currentPage" :totalPages="totalPages" />
+                <CustomPagination v-model:currentPage="info.currentPage" :totalPages="totalPages"
+                  @update:currentPage="updatecurrentPage" />
 
               </div>
 
@@ -152,8 +157,8 @@ const formatUpdatedAt = (date) => {
             <div class=" ml-8 w-20   hidden md:block">
               {{ product.id }}
             </div>
-            <div class="w-24 " >
-              <div class=" w-16  " v-if="product.images.length>0">
+            <div class="w-24 ">
+              <div class=" w-16  " v-if="product.images.length > 0">
                 <img :src="product.images[0].image_url" alt="" class="rounded-lg">
 
               </div>
@@ -223,4 +228,5 @@ const formatUpdatedAt = (date) => {
 /* Optional: Add hover styles for the thumb */
 .scrollbar::-webkit-scrollbar-thumb:hover {
   background-color: slategray;
-}</style>
+}
+</style>
