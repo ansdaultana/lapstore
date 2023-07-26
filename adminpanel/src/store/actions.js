@@ -86,7 +86,6 @@ export async function GetProductBySlug({ commit }, slug) {
 }
 
 export async function deleteProduct({ commit }, slug) {
-console.log(slug)
     try {
         const response = await axios.post(`http://localhost:8000/api/delete-product/${slug}`,
         {
@@ -100,7 +99,28 @@ console.log(slug)
     }
 }
 export async function editProduct({ commit }, product) {
-    console.log(product)
+    try {
+        const response = await axios.post(`http://localhost:8000/api/edit-product/${product.slug}`,
+            {
+                title: product.title,
+                description: product.description,
+                price: product.price,
+                slidder: product.slidder,
+                category: product.category,
+                quantity: product.quantity,
+                photos: product.photos,
+                deletedImages:product.deletedImages 
+
+            },
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data', // Important for handling files on the server
+                },
+            });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
 }
 export async function logout({ commit }) {
     try {

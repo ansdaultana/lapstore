@@ -26,6 +26,8 @@ Route::post('/api/new-product',[ProductController::class,'create']);
 Route::get('/api/get-Products',[ProductController::class,'all']);
 Route::get('/api/get-product/{slug}',[ProductController::class,'get']);
 Route::post('/api/delete-product/{slug}',[ProductController::class,'destroy']);
+Route::post('/api/edit-product/{slug}',[ProductController::class,'edit']);
+
 });
 
 Route::post('/api/login', [AdminAuthController::class, 'login']);

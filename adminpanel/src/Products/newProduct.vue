@@ -9,22 +9,23 @@ const isloading = ref(false);
 const route = useRoute();
 const slug = ref('')
 const form = ref({})
+const deletedImages=ref([]);
 onMounted(async () => {
     slug.value = route.params.slug;
     if (route.name === 'editproduct') {
-        await store.dispatch('GetProductBySlug', slug)
-        form.value.title = Product.value.title,
+            await store.dispatch('GetProductBySlug', slug)
+            form.value.title = Product.value.title,
             form.value.description = Product.value.description,
             form.value.price = Product.value.price,
             form.value.slidder = Product.value.slidder,
             form.value.category = Product.value.category.name,
             form.value.quantity = Product.value.quantity;
             imagesurlforview.value = Product.value.images
-            images.value = Product.value.images
+         //   images.value = Product.value.images
     }
     else {
 
-        form.value.title = '',
+            form.value.title = '',
             form.value.description = '',
             form.value.price = '',
             form.value.slidder = false,
@@ -71,6 +72,7 @@ const onFileInput = async (event) => {
             ImagesError.value = 'Image is not in Jpeg or Png format.'
         }
     }
+    imagesurlforview.value = imagesurlforview.value.slice(0, 4);
 }
 
 
@@ -102,9 +104,14 @@ const onDrop = async (event) => {
             ImagesError.value = 'Image is not in Jpeg or Png format.'
         }
     }
+    imagesurlforview.value = imagesurlforview.value.slice(0, 4);
+
 };
 const deleteUploaded = (image) => {
     const imageIndex = imagesurlforview.value.indexOf(image);
+    if (image.image_url) {
+        deletedImages.value.push(image.id);
+    }
     if (imageIndex !== -1) {
         imagesurlforview.value.splice(imageIndex, 1);
     }
@@ -160,9 +167,13 @@ const EditProduct = async () => {
             category: form.value.category,
             quantity: form.value.quantity,
             photos: images.value,
+            deletedImages:deletedImages.value,
+            slug:Product.value.slug
         };
+        
+
         isloading.value = true;
-        await store.dispatch('editProduct', formData);
+         const response= await store.dispatch('editProduct', formData);
         isloading.value = false
         resetform();
         router.push({ name: 'app.products' });
@@ -203,13 +214,12 @@ const SubmitRequest = () => {
             <div class=" ml-2 mr-2 border-2 border-gray-200 h-[calc(100vh - 300px)]">
                 <div class="w-auto divide-x-2 flex  shadow-md">
                     <div class="w-1/3">
-
                         <div @dragover.prevent="onDragover" @dragleave.prevent="onDragleave" @drop.prevent="onDrop"
                             class="
 
                             shadow-md rounded-md
                             transition-transform hover:scale-103 ease-in duration-200
-                            m-2 md:ml-10 mt-5 py-5 md:px-12 md:py-24 md:w-60 items-center flex justify-center border-2 border-dashed border-orange-300">
+                            m-2 md:ml-10 mt-2 py-5 md:px-12 md:py-24 md:w-60 items-center flex justify-center border-2 border-dashed border-orange-300">
                             <div class="flex-col items-center justify-center ">
                                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"
                                     stroke="currentColor" class="ml-5 text-orange-300 w-12 md:w-24 h-24 md:-mt-10">
@@ -231,6 +241,7 @@ const SubmitRequest = () => {
                             </div>
                         </div>
 
+                        <div class="text-xs text-orange-400 mt-2 ml-2">You can ipload only 4 pictures</div>
 
                         <div v-if="ImagesError" class="text-red-400 text-sm ml-2">
                             {{ ImagesError.value }}
@@ -244,7 +255,7 @@ const SubmitRequest = () => {
                                     <div class="flex">
                                         <div class="md:w-24 w-14  m-2  items-center flex">
                                             <img class="md:h-16
-                                    " :src="route.name === 'newproduct' ? image.url : image.image_url">
+                                        " :src="image.url ? image.url : image.image_url">
 
                                         </div>
                                         <div class="m-2 md:block hidden" v-if="route.name === 'newproduct'">

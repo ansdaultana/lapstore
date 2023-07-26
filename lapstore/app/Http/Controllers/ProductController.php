@@ -120,15 +120,15 @@ class ProductController extends Controller
         // $slug = $validate['slug'];
 
         if (auth()->check()) {
-             $product = Product::where('slug', $slug)->first();
-             if ($product) {
-                 $product->delete();
-             } else {
-                 return response([
-                     'Unuccessful' => 'product not found'
-                 ]);
-             }
-         }
+            $product = Product::where('slug', $slug)->first();
+            if ($product) {
+                $product->delete();
+            } else {
+                return response([
+                    'Unsuccessful' => 'product not found'
+                ]);
+            }
+        }
 
 
 
@@ -136,5 +136,57 @@ class ProductController extends Controller
             'Successful' => $slug
         ]);
     }
-    //
+
+    public function edit(Request $request,$slug)
+    {
+        $validate = $request->validate([
+            'title' => 'required|string|max:255',
+            'description' => 'required|string',
+            'price' => 'required|numeric|min:0',
+            'category' => 'required|string|exists:categories,name',
+            'quantity' => 'required|integer|min:1',
+            'photos' => 'array',
+            'deletedImages'=>'array',
+            'deletedImages*'=>'integer',
+            'photos.*' => 'image'
+        ]);
+        if (auth()->check()) {
+            $user = auth()->user();
+            $category = Category::firstWhere('name', $validate['category']);
+            if (!$category) {
+                return response(['message' => 'Category not found'], 404);
+            }
+            $category_id = $category->id;
+            $product = Product::where('slug', $slug)->first();
+            $product->title =  $validate['title'];
+            $product->description =  $validate['description'];
+            $product->price =  $validate['price'];
+            $product->category_id = $category_id;
+            $product->quantity =  $validate['quantity'];
+            $product->save();
+            if (request()->has('photos')) {
+                foreach ($request->file('photos') as $photo) {
+                    $uploadedImage = $photo->storeOnCloudinary();
+                    $imageUrl = $uploadedImage->getSecurePath();
+                    $imageUrl = Image::create([
+                        'product_id' => $product->id,
+                        'image_url' => $imageUrl
+                    ]);
+                }
+
+            }
+            if (isset($validate['deletedImages']) && is_array($validate['deletedImages'])) {
+                foreach ($validate['deletedImages'] as $imageId) {
+                    $image=Image::where('id',$imageId)->first();
+                    if ($image) {
+                        # code...
+                    $image->delete();
+                    }
+                }
+            }
+        }
+        return response([
+            'message' => $product
+        ]);
+    } //
 }
