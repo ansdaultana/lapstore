@@ -23,6 +23,7 @@ Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AdminAuthController::class, 'getUser']);
 Route::post('/api/logout', [AdminAuthController::class, 'logout']);
 Route::post('/api/new-product',[ProductController::class,'create']);
+Route::get('/api/get-Products',[ProductController::class,'all']);
 
 });
 

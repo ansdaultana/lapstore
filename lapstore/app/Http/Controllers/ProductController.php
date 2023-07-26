@@ -14,8 +14,6 @@ class ProductController extends Controller
     public function create(Request $request)
     {
 
-
-
         $validate = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
@@ -62,6 +60,28 @@ class ProductController extends Controller
             "image" => $imageUrl ?? null,
             "message" => "Product Created Successfully.",
         ], 200);
+    }
+
+    public function all(Request $request)
+    {
+
+
+        $validate = $request->validate([
+            'perPage' => 'required',
+            'currentPage' => 'required'
+        ]);
+        if (auth()->check()) {
+
+            $perpage = $validate['perPage'];
+            $currentPage = $validate['currentPage'];
+
+            $Products = Product::with('images')->paginate($perpage,['*'],'page',$currentPage);
+
+        }
+        return response([
+            "Products" => $Products,
+            "total" => $Products->total(), 
+        ]);
     }
     //
 }

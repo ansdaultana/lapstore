@@ -1,95 +1,62 @@
 
 <script setup>
 import AppLayout from '../Layouts/AppLayout.vue'
-import { computed, ref } from 'vue';
+import { computed, ref,onMounted } from 'vue';
 import router from '../router';
+import store from '../store/index.js'
 import CustomPagination from '../components/CustomPagination.vue';
 const goToNewProduct = () => {
   router.push({ name: 'app.newproduct' });
 
 }
-const currentPage = ref(1);
-const itemsPerPage = 10;
-const perPage = ref(10);
 
-const totalItems = 100;
-const totalPages = computed(() => Math.ceil(totalItems / itemsPerPage));
-const products = [
-  {
-    ID: 1,
-    title: 'Dell Precision 5520',
-    price: '10400',
-    imageUrl:
-      'https://cdn.mos.cms.futurecdn.net/xq9imgnBPQw7TWPz9JnakA.jpg',
-    lastUpdatedDateTime: '2023-01-23T13:23Z',
-  }, {
-    ID: 2,
-    title: 'Dell Precision 5520',
-    price: '10400',
-    imageUrl:
-      'https://cdn.mos.cms.futurecdn.net/xq9imgnBPQw7TWPz9JnakA.jpg',
-    lastUpdatedDateTime: '2023-01-23T13:23Z',
-  },
-  {
-    ID: 3,
-    title: 'Dell Precision 5520',
-    price: '10400',
-    imageUrl:
-      'https://cdn.thewirecutter.com/wp-content/media/2023/06/laptops-2048px-5607.jpg?auto=webp&quality=75&crop=1.91:1&width=1200',
-    lastUpdatedDateTime: '2023-01-23T13:23Z',
-  }, {
-    ID: 3,
-    title: 'Dell Precision 5520',
-    price: '10400',
-    imageUrl:
-      'https://cdn.mos.cms.futurecdn.net/xq9imgnBPQw7TWPz9JnakA.jpg',
-    lastUpdatedDateTime: '2023-01-23T13:23Z',
-  }, {
-    ID: 3,
-    title: 'Dell Precision 5520',
-    price: '10400',
-    imageUrl:
-      'https://cdn.mos.cms.futurecdn.net/xq9imgnBPQw7TWPz9JnakA.jpg',
-    lastUpdatedDateTime: '2023-01-23T13:23Z',
-  }, {
-    ID: 3,
-    title: 'Dell Precision 5520',
-    price: '10400',
-    imageUrl:
-      'https://cdn.mos.cms.futurecdn.net/xq9imgnBPQw7TWPz9JnakA.jpg',
-    lastUpdatedDateTime: '2023-01-23T13:23Z',
-  }, {
-    ID: 3,
-    title: 'Dell Precision 5520',
-    price: '10400',
-    imageUrl:
-      'https://cdn.mos.cms.futurecdn.net/xq9imgnBPQw7TWPz9JnakA.jpg',
-    lastUpdatedDateTime: '2023-01-23T13:23Z',
-  }, {
-    ID: 3,
-    title: 'Dell Precision 5520',
-    price: '10400',
-    imageUrl:
-      'https://cdn.mos.cms.futurecdn.net/xq9imgnBPQw7TWPz9JnakA.jpg',
-    lastUpdatedDateTime: '2023-01-23T13:23Z',
-  },
-  {
-    ID: 4,
-    title: 'Dell Precision 5520',
-    price: '10400',
-    imageUrl:
-      'https://cdn.mos.cms.futurecdn.net/xq9imgnBPQw7TWPz9JnakA.jpg',
-    lastUpdatedDateTime: '2023-01-23T13:23Z',
-  },
-  {
-    ID: 5,
-    title: 'Dell Precision 5520',
-    price: '10400',
-    imageUrl:
-      'https://cdn.mos.cms.futurecdn.net/xq9imgnBPQw7TWPz9JnakA.jpg',
-    lastUpdatedDateTime: '2023-01-23T13:23Z',
-  },
-]
+const info=ref({
+  currentPage:1,
+  perPage:10
+});
+
+const products=computed(()=>store.getters.Products);
+const totalItems = ref(10);
+const totalPages = computed(() => Math.ceil(totalItems / info.value.perPage));
+
+onMounted(()=>{
+  getProducts();
+})
+
+const getProducts=async()=>
+{
+
+  try {
+    
+    const response=await store.dispatch('getProducts',info);
+    totalItems.value=response.data.total;
+    console.log(totalItems.value)
+  } catch (error) {
+    console.log(error);
+  }
+}
+
+const formatUpdatedAt = (date) => {
+    const updatedDate = new Date(date);
+    const currentDate = new Date();
+    const diffInMilliseconds = Math.abs(currentDate - updatedDate);
+
+    const seconds = Math.floor(diffInMilliseconds / 1000);
+    const minutes = Math.floor(seconds / 60);
+    const hours = Math.floor(minutes / 60);
+    const days = Math.floor(hours / 24);
+
+    if (days > 0) {
+        return `${days} day${days > 1 ? 's' : ''} ago`;
+    } else if (hours > 0) {
+        return `${hours} hour${hours > 1 ? 's' : ''} ago`;
+    } else if (minutes > 0) {
+        return `${minutes} minute${minutes > 1 ? 's' : ''} ago`;
+    } else {
+        return `${seconds} second${seconds !== 1 ? 's' : ''} ago`;
+    }
+}
+
 </script>
 <template>
   <AppLayout>
@@ -128,7 +95,7 @@ const products = [
             <div class="flex">
               <div class="flex items-center ">
                 <span class="whitespace-nowrap mr-3 text-black hidden md:block">Per Page</span>
-                <select @change="getProducts(null)" v-model="perPage"
+                <select @change="getProducts" v-model="info.perPage"
                   class=" hidden md:block appearance-none relative  w-24 px-3 py-2 border border-slate-300 placeholder-slate-500 text-slate-900 rounded-lg focus:outline-none focus:ring-slate-500 focus:border-slate-500 focus:z-10 sm:text-sm">
                   <option value="5">5</option>
                   <option value="10">10</option>
@@ -139,7 +106,7 @@ const products = [
                 <!-- <span class="ml-3 hidden md:block">Found {{ products.total }} products</span> -->
               </div>
               <div class="ml-2 -mt-2 items-center ">
-                <CustomPagination v-model:currentPage="currentPage" :totalPages="totalPages" />
+                <CustomPagination v-model:currentPage="info.currentPage" :totalPages="totalPages" />
 
               </div>
 
@@ -182,11 +149,11 @@ const products = [
           <li v-for="product in products" :key="product.ID"
             class="cursor-pointer hover:shadow-md rounded-lg hover:bg-slate-100 flex justify-between gap-x-6 py-5 transition-transform hover:scale-103 ease-in duration-200 ">
             <div class=" ml-8 w-20   hidden md:block">
-              {{ product.ID }}
+              {{ product.id }}
             </div>
-            <div class="w-24 ">
-              <div class=" w-16  ">
-                <img :src="product.imageUrl" alt="" class="rounded-lg">
+            <div class="w-24 " >
+              <div class=" w-16  " v-if="product.images.length>0">
+                <img :src="product.images[0].image_url" alt="" class="rounded-lg">
 
               </div>
             </div>
@@ -198,8 +165,8 @@ const products = [
               {{ product.price }}
 
             </div>
-            <div class="w-40 hidden lg:block">
-              {{ product.lastUpdatedDateTime }}
+            <div class="w-40 md:pl-8 hidden lg:block">
+              {{ formatUpdatedAt(product.updated_at) }}
 
             </div>
             <div class="w-20 h-10 text-black hover:text-black justify-between  flex mr-8 ml-2 gap-3">

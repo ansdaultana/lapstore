@@ -3,7 +3,7 @@ export function setUser(state, user) {
     localStorage.setItem('USER_DATA', JSON.stringify(user));
 }
 
-export  function setToken(state, token) {
+export function setToken(state, token) {
     state.user.token = token;
     if (token) {
         sessionStorage.setItem('TOKEN', token);
@@ -11,4 +11,9 @@ export  function setToken(state, token) {
     } else {
         sessionStorage.removeItem('TOKEN');
     }
+}
+
+export function setProducts(state, Products) {
+    state.Products = Products;
+
 }

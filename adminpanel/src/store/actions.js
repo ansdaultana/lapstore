@@ -26,36 +26,50 @@ export async function login({ commit }, user) {
     }
 }
 
-export async function newProduct ({commit},product)
-{
+export async function newProduct({ commit }, product) {
     try {
-        await axios.get('http://localhost:8000/sanctum/csrf-cookie');
         const response = await axios.post('http://localhost:8000/api/new-product',
-        {
-            title: product.title,
-            description: product.description,
-            price: product.price,
-            slidder: product.slidder,
-            category: product.category,
-            quantity: product.quantity,
-            photos: product.photos, // Add the images directly to the form data
-          
-           },
-           {
-            headers: {
-              'Content-Type': 'multipart/form-data', // Important for handling files on the server
+            {
+                title: product.title,
+                description: product.description,
+                price: product.price,
+                slidder: product.slidder,
+                category: product.category,
+                quantity: product.quantity,
+                photos: product.photos, // Add the images directly to the form data
+
             },
-        });
-           console.log(response);
-           return response.data;
+            {
+                headers: {
+                    'Content-Type': 'multipart/form-data', // Important for handling files on the server
+                },
+            });
+        return response.data;
     } catch (error) {
-      throw error;
+        throw error;
     }
 }
+export async function getProducts({ commit }, info) {
 
+    try {
+
+        const response = await axios.get('http://localhost:8000/api/get-Products', {
+            params: {
+                currentPage: info.value.currentPage,
+                perPage: info.value.perPage
+            },
+        },
+        );
+        if (response.data && response.data.Products) {
+            commit('setProducts', response.data.Products.data)
+        }
+        return response;
+    } catch (error) {
+        throw error;
+    }
+}
 export async function logout({ commit }) {
     try {
-        await axios.get('http://localhost:8000/sanctum/csrf-cookie');
         const response = await axios.post('http://localhost:8000/api/logout');
         if (response.data) {
             commit('setToken', '');

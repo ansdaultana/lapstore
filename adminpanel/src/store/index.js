@@ -8,13 +8,19 @@ const store =createStore(
             user:{
                 token: sessionStorage.getItem('TOKEN') || '',
                 data:JSON.parse(localStorage.getItem('USER_DATA'))||'',
+            },
+            Products:{
+
             }
         },
+
         mutations,
         actions,
         getters: {
             userName: (state) => state.user.data.name,
-            userToken: (state) => state.user.token
+            userToken: (state) => state.user.token,
+            Products:(state)=>state.Products,
+
           },
     }
 );
