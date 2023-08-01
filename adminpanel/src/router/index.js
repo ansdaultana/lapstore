@@ -14,6 +14,15 @@ import EditProduct from '../Products/editProduct.vue'
 import { newProduct } from "../store/actions";
 const routes = [
     {
+        path: '/',
+        name: 'app.dashboard',
+        component: Dashboard,
+        meta: {
+            requiresAuth: true
+        }
+
+    },
+    {
         path: '/app/dashboard',
         name: 'app.dashboard',
         component: Dashboard,
