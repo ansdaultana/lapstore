@@ -1,7 +1,7 @@
 <main>
     <div>
         <div class="flex justify-between p-1">
-            <div class="text-md m-2 text-orange-700">
+            <div class="text-md m-2 text-orange-700 ">
                 LapStore
             </div>
             <div class="flex">
