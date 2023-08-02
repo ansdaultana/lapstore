@@ -12,7 +12,7 @@
     rel="stylesheet" />
 
 </head>
-<body class="font-serif">
+<body class="font-serif bg-black">
     <header>
     </header>
 
@@ -28,5 +28,17 @@
     .slidder-img{
         height: 400px;
     }
+    .text-gradient {
+  --gradient-color-1: #FFA500; /* Replace with your desired colors */
+  --gradient-color-2: #FF4500;
+
+  background: linear-gradient(45deg, var(--gradient-color-1), var(--gradient-color-2));
+  background-clip: text;
+  -webkit-background-clip: text;
+  color: transparent;
+}
 </style>
+<script>
+    
+</script>
 </html>
