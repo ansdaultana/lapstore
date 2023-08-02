@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Model;
 class Product extends Model
 {
     use HasFactory , Sluggable;
-    protected $fillable=['title','slug','quantity','description','category_id','price','created_by','updated_by','deleted_by',];
+    protected $fillable=['title','slug','quantity','description','category_id','price','created_by','updated_by','deleted_by','slidder','recommended'];
 
     public function user()
     {

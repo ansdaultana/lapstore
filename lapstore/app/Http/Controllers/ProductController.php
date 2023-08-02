@@ -13,51 +13,62 @@ class ProductController extends Controller
 
     public function create(Request $request)
     {
+        $slidder = false;
+        $recommended = false;
+
 
         $validate = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
+            'recommended'=>'string',
+            'slidder'=>'string',
             'category' => 'required|string|exists:categories,name',
             'quantity' => 'required|integer|min:1',
             'photos' => 'array',
             'photos.*' => 'image'
         ]);
-
-        if (auth()->check()) {
-            $user = auth()->user();
-            $validate['user_id'] = $user->id;
-            $category = Category::firstWhere('name', $validate['category']);
-            if (!$category) {
-                return response(['message' => 'Category not found'], 404);
-            }
-            $category_id = $category->id;
-            $product = Product::create([
-                'user_id' => $validate['user_id'],
-                'title' => $validate['title'],
-                'description' => $validate['description'],
-                'price' => $validate['price'],
-                'category_id' => $category_id,
-                'quantity' => $validate['quantity'],
-                'created_by' => $validate['user_id']
-            ]);
-
-            if (request()->has('photos')) {
-                foreach ($request->file('photos') as $photo) {
-                    $uploadedImage = $photo->storeOnCloudinary();
-                    $imageUrl = $uploadedImage->getSecurePath();
-                    $imageUrl = Image::create([
-                        'product_id' => $product->id,
-                        'image_url' => $imageUrl
-                    ]);
-                }
-
-            }
-
-
-        }
+       
+        if (request('recommended')&&request('recommended') === "true") {
+            $recommended = true;
+        } 
+        if (request('slidder')&&request('slidder') === "true") {
+            $slidder = true;
+        } 
+         if (auth()->check()) {
+             $user = auth()->user();
+             $validate['user_id'] = $user->id;
+             $category = Category::firstWhere('name', $validate['category']);
+             if (!$category) {
+                 return response(['message' => 'Category not found'], 404);
+             }
+             $category_id = $category->id;
+             $product = Product::create([
+                 'user_id' => $validate['user_id'],
+                 'title' => $validate['title'],
+                 'description' => $validate['description'],
+                 'price' => $validate['price'],
+                 'category_id' => $category_id,
+                 'slidder'=>$slidder,
+                 'recommended'=>$recommended,
+                 'quantity' => $validate['quantity'],
+                 'created_by' => $validate['user_id']
+             ]);
+             if (request()->has('photos')) {
+                 foreach ($request->file('photos') as $photo) {
+                     $uploadedImage = $photo->storeOnCloudinary();
+                     $imageUrl = $uploadedImage->getSecurePath();
+                     $imageUrl = Image::create([
+                         'product_id' => $product->id,
+                         'image_url' => $imageUrl
+                     ]);
+                 }
+             }
+         }
         return response([
-            "image" => $imageUrl ?? null,
+            "recommended" => $recommended ,
+            "slidder" => $slidder ,
+
             "message" => "Product Created Successfully.",
         ], 200);
     }
@@ -137,19 +148,30 @@ class ProductController extends Controller
         ]);
     }
 
-    public function edit(Request $request,$slug)
+    public function edit(Request $request, $slug)
     {
+        $recommended = false;
+        $slidder = false;
+
         $validate = $request->validate([
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
+            'recommended'=>'string',
+            'slidder'=>'string',
             'category' => 'required|string|exists:categories,name',
             'quantity' => 'required|integer|min:1',
             'photos' => 'array',
-            'deletedImages'=>'array',
-            'deletedImages*'=>'integer',
+            'deletedImages' => 'array',
+            'deletedImages*' => 'integer',
             'photos.*' => 'image'
         ]);
+        if (request('recommended')&&request('recommended') === "true") {
+            $recommended = true;
+        } 
+        if (request('slidder')&&request('slidder') === "true") {
+            $slidder = true;
+        } 
         if (auth()->check()) {
             $user = auth()->user();
             $category = Category::firstWhere('name', $validate['category']);
@@ -158,11 +180,14 @@ class ProductController extends Controller
             }
             $category_id = $category->id;
             $product = Product::where('slug', $slug)->first();
-            $product->title =  $validate['title'];
-            $product->description =  $validate['description'];
-            $product->price =  $validate['price'];
+            $product->title = $validate['title'];
+            $product->description = $validate['description'];
+            $product->price = $validate['price'];
             $product->category_id = $category_id;
-            $product->quantity =  $validate['quantity'];
+            $product->quantity = $validate['quantity'];
+
+            $product->slidder = $slidder;
+            $product->recommended = $recommended;
             $product->save();
             if (request()->has('photos')) {
                 foreach ($request->file('photos') as $photo) {
@@ -177,10 +202,10 @@ class ProductController extends Controller
             }
             if (isset($validate['deletedImages']) && is_array($validate['deletedImages'])) {
                 foreach ($validate['deletedImages'] as $imageId) {
-                    $image=Image::where('id',$imageId)->first();
+                    $image = Image::where('id', $imageId)->first();
                     if ($image) {
                         # code...
-                    $image->delete();
+                        $image->delete();
                     }
                 }
             }

@@ -28,12 +28,14 @@ export async function login({ commit }, user) {
 }
 
 export async function newProduct({ commit }, product) {
+    console.log(product)
     try {
         const response = await axios.post('http://localhost:8000/api/new-product',
             {
                 title: product.title,
                 description: product.description,
                 price: product.price,
+                recommended:product.recommended,
                 slidder: product.slidder,
                 category: product.category,
                 quantity: product.quantity,
@@ -45,6 +47,7 @@ export async function newProduct({ commit }, product) {
                     'Content-Type': 'multipart/form-data', // Important for handling files on the server
                 },
             });
+            console.log(response.data)
         return response.data;
     } catch (error) {
         throw error;
@@ -105,6 +108,7 @@ export async function editProduct({ commit }, product) {
                 title: product.title,
                 description: product.description,
                 price: product.price,
+                recommended:product.recommended,
                 slidder: product.slidder,
                 category: product.category,
                 quantity: product.quantity,

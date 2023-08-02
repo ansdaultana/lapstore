@@ -46,6 +46,7 @@ class DatabaseSeeder extends Seeder
                 'quantity' => 23,
                 'description' => '1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop',
                 'category_id' => 1,
+                'recommended'=>true,
                 'price' => 1000,
                 'created_by' => 1,
             ]
@@ -56,6 +57,7 @@ class DatabaseSeeder extends Seeder
                 'quantity' => 23,
                 'description' => '1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop',
                 'category_id' => 1,
+                'recommended'=>true,
                 'price' => 1000,
                 'created_by' => 1,
             ]
@@ -66,6 +68,7 @@ class DatabaseSeeder extends Seeder
                 'quantity' => 23,
                 'description' => '1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop',
                 'category_id' => 1,
+                'recommended'=>true,
                 'price' => 1000,
                 'created_by' => 1,
             ]

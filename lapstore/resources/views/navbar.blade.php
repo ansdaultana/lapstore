@@ -1,6 +1,6 @@
 <main>
     <div>
-        <div class="fixed top-0 left-0 right-0 z-[100] bg-transparent flex justify-between p-5  rounded-md    text-white">
+        <div class="fixed top-0 left-0 right-0 z-[100] bg-transparent flex justify-between p-1 md:p-5  rounded-md    text-white">
           <div class="flex p-1 text-gradient">
             <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class=" mt-3 w-6 h-6  ">
               <path stroke-linecap="round" stroke-linejoin="round"
@@ -17,7 +17,7 @@
                   </svg>
                   <div class="m-2">
                     <input 
-                    class="appearance-none relative block w-32 lg:w-48 px-3 py-1 md:py-2 border border-slate-300 placeholder-slate-500 text-gray-900 rounded-lg focus:outline-none focus:ring-slate-500 focus:border-slate-500 focus:z-10 sm:text-sm"
+                    class="appearance-none relative block w-32 lg:w-48 px-3 py-1 md:py-2 border border-slate-300 placeholder-white text-gray-900 rounded-lg focus:outline-none bg-transparent focus:ring-slate-500 focus:border-slate-500 focus:z-10 sm:text-sm"
                     placeholder="Type to Search products">
             
                   </div>

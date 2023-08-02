@@ -5,8 +5,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-return new class extends Migration
-{
+return new class extends Migration {
     /**
      * Run the migrations.
      */
@@ -14,19 +13,18 @@ return new class extends Migration
     {
         Schema::create('products', function (Blueprint $table) {
             $table->id();
-            $table->string('title',2000);
-            $table->string('slug',2000);
-          //  $table->string('image',2000)->nullable();
-            $table->decimal('quantity',10);
-       //     $table->string('image_mime')->nullable();
-         //   $table->string('image_size')->nullable();
+            $table->string('title', 2000);
+            $table->string('slug', 2000);
+            $table->integer('quantity');
+            $table->boolean('slidder')->nullable();
+            $table->boolean('recommended')->nullable();
             $table->longText('description')->nullable();
             $table->foreignId('category_id')->references('id')->on('categories');
-            $table->decimal('price',10);
-            $table->foreignIdFor(User::class,'created_by')->nullable();
-            $table->foreignIdFor(User::class,'updated_by')->nullable();
+            $table->decimal('price', 10);
+            $table->foreignIdFor(User::class, 'created_by')->nullable();
+            $table->foreignIdFor(User::class, 'updated_by')->nullable();
             $table->softDeletes();
-            $table->foreignIdFor(User::class,'deleted_by')->nullable();
+            $table->foreignIdFor(User::class, 'deleted_by')->nullable();
             $table->timestamps();
         });
     }

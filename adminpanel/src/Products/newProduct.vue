@@ -9,26 +9,41 @@ const isloading = ref(false);
 const route = useRoute();
 const slug = ref('')
 const form = ref({})
-const deletedImages=ref([]);
+const deletedImages = ref([]);
 onMounted(async () => {
     slug.value = route.params.slug;
     if (route.name === 'editproduct') {
-            await store.dispatch('GetProductBySlug', slug)
-            form.value.title = Product.value.title,
+        await store.dispatch('GetProductBySlug', slug)
+        form.value.title = Product.value.title,
             form.value.description = Product.value.description,
             form.value.price = Product.value.price,
-            form.value.slidder = Product.value.slidder,
             form.value.category = Product.value.category.name,
             form.value.quantity = Product.value.quantity;
-            imagesurlforview.value = Product.value.images
-         //   images.value = Product.value.images
+        imagesurlforview.value = Product.value.images
+        //   images.value = Product.value.images
+
+        if (Product.value.recommended===1) {
+            form.value.recommended=true;
+        }
+        else{
+
+            form.value.recommended=false;
+        }
+        if (Product.value.slidder===1) {
+            form.value.slidder=true;
+        }
+        else{
+
+            form.value.slidder=false;
+        }
     }
     else {
 
-            form.value.title = '',
+        form.value.title = '',
             form.value.description = '',
             form.value.price = '',
             form.value.slidder = false,
+            form.value.recommended = false,
             form.value.category = '',
             form.value.quantity = ''
 
@@ -124,6 +139,7 @@ const resetform = () => {
     form.value.title = '';
     form.value.description = '';
     form.value.price = '';
+    form.value.recommended = false;
     form.value.slidder = false;
     form.value.category = '';
     form.value.quantity = '';
@@ -137,6 +153,7 @@ const AddNewProduct = async () => {
             title: form.value.title,
             description: form.value.description,
             price: form.value.price,
+            recommended: form.value.recommended,
             slidder: form.value.slidder,
             category: form.value.category,
             quantity: form.value.quantity,
@@ -151,6 +168,7 @@ const AddNewProduct = async () => {
     } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
             validationErrors.value = error.response.data.errors;
+            isloading.value = false
             console.log(validationErrors.value);
         } else {
             alert('An error occurred while adding the product.');
@@ -164,16 +182,17 @@ const EditProduct = async () => {
             description: form.value.description,
             price: form.value.price,
             slidder: form.value.slidder,
+            recommended: form.value.recommended,
             category: form.value.category,
             quantity: form.value.quantity,
             photos: images.value,
-            deletedImages:deletedImages.value,
-            slug:Product.value.slug
+            deletedImages: deletedImages.value,
+            slug: Product.value.slug
         };
-        
+
 
         isloading.value = true;
-         const response= await store.dispatch('editProduct', formData);
+        const response = await store.dispatch('editProduct', formData);
         isloading.value = false
         resetform();
         router.push({ name: 'app.products' });
@@ -181,6 +200,8 @@ const EditProduct = async () => {
     } catch (error) {
         if (error.response && error.response.data && error.response.data.errors) {
             validationErrors.value = error.response.data.errors;
+            isloading.value = false
+
             console.log(validationErrors.value);
         } else {
             alert('An error occurred while adding the product.');
@@ -303,13 +324,21 @@ const SubmitRequest = () => {
                                         {{ validationErrors.price[0] }}
                                     </p>
                                 </div>
-                                <div class="mb-2">
+                                <div class="">
                                     <label for="slidder" class="text-gray-700 text-sm font-semibold mb-2 mr-3">Add To the
                                         slidder:</label>
                                     <input type="checkbox" v-model="form.slidder">
                                     <p v-if="validationErrors && validationErrors.slidder"
                                         class="text-xs text-red-400 mt-1">
                                         {{ validationErrors.slidder[0] }}
+                                    </p>
+                                </div>
+                                <div class="mb-2">
+                                    <label for="recommended" class="text-gray-700 text-sm font-semibold mb-2 mr-3">Add To the recommended:</label>
+                                    <input type="checkbox" v-model="form.recommended">
+                                    <p v-if="validationErrors && validationErrors.recommended"
+                                        class="text-xs text-red-400 mt-1">
+                                        {{ validationErrors.recommended[0] }}
                                     </p>
                                 </div>
                                 <div class="">
