@@ -21,7 +21,7 @@ const showDropdown = ref(false);
 </script>
 
 <template>
-    <div class="w-full bg-slate-100 h-16 overflow-y-hidden">
+    <div class="w-full bg-slate-100 h-16 overflow-y-hidden ">
         <div class="flex justify-between">
             <div>
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5"

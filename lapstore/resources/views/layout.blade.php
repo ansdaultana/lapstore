@@ -23,4 +23,10 @@
     <footer>
     </footer>
 </body>
+
+<style>
+    .slidder-img{
+        height: 400px;
+    }
+</style>
 </html>
