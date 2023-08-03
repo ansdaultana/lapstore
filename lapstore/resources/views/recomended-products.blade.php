@@ -47,29 +47,50 @@
     transition: transform 0.5s ease-in-out;
   }
 
-  .slider-item {
-    flex: 0 0 auto;
-    width: calc(100% / 3); /* Adjusted width for three items per slide */
+
+  @media (min-width: 768px) {
+    .slider-item {
+      flex: 0 0 auto;
+    width: calc(100% / 2); 
     padding: 0 0.5rem;
     box-sizing: border-box;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .slider-item {
+      flex: 0 0 auto;
+    padding: 0 0.5rem;
+    box-sizing: border-box;
+      width: calc(100% / 3); 
+    }
   }
 </style>
 
 <script>
   const slider = document.querySelector('.slider');
   const items = document.querySelectorAll('.slider-item');
-  const itemsPerSlide = 3;
-  const itemWidth = slider.clientWidth / itemsPerSlide; // Calculate item width based on the slider container
+  let itemsPerSlide = window.innerWidth >= 1024 ? 3 : 2;
   let currentIndex = 0;
+
+  function updateSliderPosition() {
+    const itemWidth = slider.clientWidth / itemsPerSlide;
+    slider.style.transition = 'transform 0.5s ease-in-out';
+    slider.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
+  }
 
   function slideNext() {
     currentIndex = (currentIndex + 1) % (items.length - itemsPerSlide + 1);
     updateSliderPosition();
   }
 
-  function updateSliderPosition() {
-    slider.style.transform = `translateX(-${currentIndex * itemWidth}px)`;
-  }
-
   setInterval(slideNext, 3000); // Slide every 3 seconds
+
+  window.addEventListener('resize', () => {
+    itemsPerSlide = window.innerWidth >= 1024 ? 3 : 2;
+    updateSliderPosition();
+  });
+
+  // Initialize slider position
+  updateSliderPosition();
 </script>
