@@ -12,7 +12,7 @@
     rel="stylesheet" />
 
 </head>
-<body class="font-serif bg-black">
+<body class="font-serif bg-slate-200">
     <header>
     </header>
 

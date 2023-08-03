@@ -1,6 +1,6 @@
 <main>
     <div>
-        <div class="fixed top-0 left-0 right-0 z-[100] bg-transparent flex justify-between p-1 md:p-5  rounded-md    text-white">
+        <div class="fixed top-0 left-0 right-0 z-[100] bg-transparent shadow-lg rounded-b-xl flex justify-between p-1 md:p-2  rounded-md    text-white">
           <div class="flex p-1 text-gradient">
             <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class=" mt-3 w-6 h-6  ">
               <path stroke-linecap="round" stroke-linejoin="round"
