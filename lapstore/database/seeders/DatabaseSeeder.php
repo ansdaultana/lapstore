@@ -73,6 +73,39 @@ class DatabaseSeeder extends Seeder
                 'created_by' => 1,
             ]
         );
+        Product::create(
+            [
+                'title' => '3st laptop',
+                'quantity' => 23,
+                'description' => '1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop',
+                'category_id' => 1,
+                'recommended'=>true,
+                'price' => 1000,
+                'created_by' => 1,
+            ]
+        );
+        Product::create(
+            [
+                'title' => '4rth Image',
+                'quantity' => 23,
+                'description' => '1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop',
+                'category_id' => 1,
+                'recommended'=>true,
+                'price' => 1000,
+                'created_by' => 1,
+            ]
+        );
+        Product::create(
+            [
+                'title' => '5th red dragon mouse',
+                'quantity' => 23,
+                'description' => '1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop1st laptop',
+                'category_id' => 1,
+                'recommended'=>true,
+                'price' => 1000,
+                'created_by' => 1,
+            ]
+        );
 
         Image::create([
             'image_url' => 'https://res.cloudinary.com/ddrivhxfq/image/upload/f_auto,q_auto/xbqscokdjitefrwzqohj',
@@ -86,6 +119,19 @@ class DatabaseSeeder extends Seeder
         Image::create([
             'image_url' => 'https://res.cloudinary.com/ddrivhxfq/image/upload/v1690400898/i1lrywcezpqaxof9nglr.webp',
             'product_id' => 3,
+        ]);
+        Image::create([
+            'image_url' => 'https://res.cloudinary.com/ddrivhxfq/image/upload/f_auto,q_auto/xbqscokdjitefrwzqohj',
+            'product_id' => 5,
+        ]);
+
+        Image::create([
+            'image_url' => 'https://res.cloudinary.com/ddrivhxfq/image/upload/v1690140547/d4fdbjkkvxibyjx8qoep.jpg',
+            'product_id' => 4,
+        ]);
+        Image::create([
+            'image_url' => 'https://res.cloudinary.com/ddrivhxfq/image/upload/v1690400898/i1lrywcezpqaxof9nglr.webp',
+            'product_id' => 6,
         ]);
     }
 }

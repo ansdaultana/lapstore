@@ -10,8 +10,6 @@ import Users from '../views/Users.vue';
 import Products from '../Products/Products.vue';
 import Reports from '../views/Reports.vue';
 import NewProduct from '../Products/NewProduct.vue'
-import EditProduct from '../Products/editProduct.vue'
-import { newProduct } from "../store/actions";
 const routes = [
     {
         path: '/',

@@ -1,6 +1,6 @@
 <div
   id="carouselExampleIndicators"
-  class="relative h-[200px]  md:h-[500px] lg:h-[700px] overflow-hidden"
+  class="relative h-[200px]  md:h-[500px] lg:h-[700px] overflow-hidden rounded-b-xl"
   data-te-carousel-init
   data-te-ride="carousel">
   <!--Carousel indicators-->
@@ -114,3 +114,15 @@
   </button>
 </div>
 
+<script>
+    document.addEventListener("DOMContentLoaded", function () {
+  const nextButton = document.querySelector("[data-te-slide='next']");
+
+  function triggerNextSlide() {
+    nextButton.click();
+  }
+
+  setInterval(triggerNextSlide, 3000); // Click "Next" button every 3 seconds
+});
+
+</script>
