@@ -18,9 +18,9 @@ class FrontendController extends Controller
         $categories=Category::get();
        // dd($recommended[1]->images[0]->image_url);
         $slidder_images = [
-            "https://res.cloudinary.com/ddrivhxfq/image/upload/f_auto,q_auto/kamnkc10tzwjngjo00lh",
-            "https://res.cloudinary.com/ddrivhxfq/image/upload/f_auto,q_auto/rutkip9kllbmf7mgvqp4",
             "https://res.cloudinary.com/ddrivhxfq/image/upload/f_auto,q_auto/k3puaksoohradi1bfvrm",
+            "https://res.cloudinary.com/ddrivhxfq/image/upload/f_auto,q_auto/rutkip9kllbmf7mgvqp4",
+            "https://res.cloudinary.com/ddrivhxfq/image/upload/f_auto,q_auto/kamnkc10tzwjngjo00lh",
         ];
         return view('home', [
             "slidder_images" => $slidder_images,

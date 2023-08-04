@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Category;
 use App\Models\Image;
 use App\Models\Product;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -214,4 +215,19 @@ class ProductController extends Controller
             'message' => $product
         ]);
     } //
+
+
+    public function show(Request $request,$slug)
+    {
+
+        try {
+            $product= Product::with('category', 'images')->where('slug',$slug)->first();
+        } catch (\Throwable $th) {
+            
+            throw $th;
+        }
+        return view('product',[
+            'product'=> $product
+        ]);
+    }
 }

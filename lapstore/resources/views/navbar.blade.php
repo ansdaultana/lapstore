@@ -1,13 +1,13 @@
 <main>
-    <div>
-        <div class="fixed top-0 left-0 right-0 z-[100] bg-transparent shadow-lg rounded-b-xl flex justify-between p-1 md:p-2  rounded-md    text-white">
+    <div class="font-sans">
+        <div class=" top-0 left-0 right-0 z-[100] bg-transparent shadow-lg rounded-b-xl flex justify-between p-1 md:p-2  rounded-md    text-white @if(request()->is('/')) fixed @endif">
           <div class="flex p-1 text-gradient">
             <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class=" mt-3 w-6 h-6  ">
               <path stroke-linecap="round" stroke-linejoin="round"
                   d="M9 17.25v1.007a3 3 0 01-.879 2.122L7.5 21h9l-.621-.621A3 3 0 0115 18.257V17.25m6-12V15a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 15V5.25m18 0A2.25 2.25 0 0018.75 3H5.25A2.25 2.25 0 003 5.25m18 0V12a2.25 2.25 0 01-2.25 2.25H5.25A2.25 2.25 0 013 12V5.25" />
           </svg>
-          <div class="text-xl mt-2 ml-1  ">
-            LapStore
+          <div class="text-xl font-bold mt-2 ml-1  ">
+           <a href="/">LapStore</a> 
         </div>
           </div> 
           
@@ -17,7 +17,7 @@
                   </svg>
                   <div class="m-2">
                     <input 
-                    class=" transition-transform hover:scale-103 appearance-none relative block w-32 lg:w-48 px-3 py-1 md:py-2 border border-slate-300 placeholder-white text-white rounded-lg focus:outline-none bg-transparent focus:ring-slate-300 focus:border-slate-300 focus:z-10 sm:text-sm"
+                    class=" transition-transform hover:scale-103 appearance-none relative block w-32 lg:w-48 px-3 py-1 md:py-2 border border-slate-300 placeholder-orange-400 text-orange-600 rounded-lg focus:outline-none bg-transparent focus:ring-slate-300 focus:border-slate-300 focus:z-10 sm:text-sm"
                     placeholder="Type to Search products">
             
                   </div>

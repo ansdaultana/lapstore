@@ -17,7 +17,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [FrontendController::class,'index']);
-
+Route::get('products/{slug}',[ProductController::class,'show']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AdminAuthController::class, 'getUser']);
@@ -29,5 +29,6 @@ Route::post('/api/delete-product/{slug}',[ProductController::class,'destroy']);
 Route::post('/api/edit-product/{slug}',[ProductController::class,'edit']);
 
 });
+
 
 Route::post('/api/login', [AdminAuthController::class, 'login']);
