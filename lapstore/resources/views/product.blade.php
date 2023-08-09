@@ -1,28 +1,24 @@
 @extends('layout')
 @include('navbar')
 
-<main>
-    <div class="flex">
-        <div class="w-1/2 h-full justify-center items-center flex">
-
-            <div class>
-                <div
-                    class="p-8  rounded-2xl mt-6 hover:cursor-pointer transition-transform hover:scale-103 ease-in-out duration-300 shadow-sm bg-gradient-to-bl from-orange-100 via-orange-50 to-slate-100 shadow-green-200">
-                    <img class="rounded-2xl md:w-96"
-                        src="{{$product->images[0]->image_url}}" alt>
-                </div>
-                <div class="mt-2 flex space-x-4">
-                    @foreach($product->images as $image)
-                    <div
-                        class="bg-slate-200 rounded-2xl  md:h-24 hover:cursor-pointer transition-transform hover:scale-103 ease-in-out duration-200 ">
-                        <img src="{{$image->image_url}}"
-                            class="h-14 md:h-24 rounded-2xl  p-2" alt>
+<main x-data="{ selectedImage: '{{ $product->images[0]->image_url }}' }">
+        <div class="flex">
+            <div class="w-1/2 h-full justify-center items-center flex">
+                <div class="w-full">
+                    <div class="p-8 rounded-2xl mt-6 hover:cursor-pointer transition-transform hover:scale-103 ease-in-out duration-300  shadow-sm bg-gradient-to-bl from-orange-100 via-orange-50 to-slate-100 shadow-green-200">
+                        <img class="rounded-2xl md:w-96" x-bind:src="selectedImage" alt>
                     </div>
-                    @endforeach
+                    <div class="mt-2 flex space-x-4">
+                        @foreach($product->images as $image)
+                        <div x-on:click="selectedImage = '{{ $image->image_url }}'"
+                            class="bg-slate-200 rounded-2xl md:h-24 hover:cursor-pointer transition-transform hover:scale-103 ease-in-out duration-200">
+                            <img src="{{$image->image_url}}" class="h-14 md:h-24 rounded-2xl p-2" alt>
+                        </div>
+                        @endforeach
+                    </div>
                 </div>
             </div>
-
-        </div>
+            
         <div class="w-1/2 h-full ">
             <div class="mt-8  p-2 md:pl-8 flex">
                 <h1 class="text-2xl font-bold ">{{$product->title}}</h1>
