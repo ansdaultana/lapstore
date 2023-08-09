@@ -3,8 +3,10 @@
 <div
     class="flex flex-col  md:flex-row justify-center items-center space-x-3 md:space-x-10 mt-8 mb-10">
     @foreach($categories as $category)
+    <a href="/products/{{$category->name}}">
     <div
-        class="w-56 md:w-56 bg-gradient-to-r from-orange-400 via-orange-600 to-red-600 rounded-xl px-4 py-7 shadow-lg mb-4 transition-transform hover:scale-105 duration-300 ease-in-out hover:cursor-pointer">
+        class="w-56 md:w-56 bg-gradient-to-r from-orange-400 via-orange-600 to-red-600 rounded-xl px-4 py-7 shadow-lg shadow-orange-200 mb-4 transition-transform hover:scale-105 duration-300 ease-in-out hover:cursor-pointer">
+
         <div class="flex items-center justify-center">
             <h4 class="mt-2 text-lg text-white  ">{{$category->name}}</h4>
         </div>
@@ -29,6 +31,7 @@
             @endif
         </div>
     </div>
+</a>
     @endforeach
 
 </div>

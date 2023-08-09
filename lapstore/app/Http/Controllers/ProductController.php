@@ -22,53 +22,53 @@ class ProductController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
-            'recommended'=>'string',
-            'slidder'=>'string',
+            'recommended' => 'string',
+            'slidder' => 'string',
             'category' => 'required|string|exists:categories,name',
             'quantity' => 'required|integer|min:1',
             'photos' => 'array',
             'photos.*' => 'image'
         ]);
-       
-        if (request('recommended')&&request('recommended') === "true") {
+
+        if (request('recommended') && request('recommended') === "true") {
             $recommended = true;
-        } 
-        if (request('slidder')&&request('slidder') === "true") {
+        }
+        if (request('slidder') && request('slidder') === "true") {
             $slidder = true;
-        } 
-         if (auth()->check()) {
-             $user = auth()->user();
-             $validate['user_id'] = $user->id;
-             $category = Category::firstWhere('name', $validate['category']);
-             if (!$category) {
-                 return response(['message' => 'Category not found'], 404);
-             }
-             $category_id = $category->id;
-             $product = Product::create([
-                 'user_id' => $validate['user_id'],
-                 'title' => $validate['title'],
-                 'description' => $validate['description'],
-                 'price' => $validate['price'],
-                 'category_id' => $category_id,
-                 'slidder'=>$slidder,
-                 'recommended'=>$recommended,
-                 'quantity' => $validate['quantity'],
-                 'created_by' => $validate['user_id']
-             ]);
-             if (request()->has('photos')) {
-                 foreach ($request->file('photos') as $photo) {
-                     $uploadedImage = $photo->storeOnCloudinary();
-                     $imageUrl = $uploadedImage->getSecurePath();
-                     $imageUrl = Image::create([
-                         'product_id' => $product->id,
-                         'image_url' => $imageUrl
-                     ]);
-                 }
-             }
-         }
+        }
+        if (auth()->check()) {
+            $user = auth()->user();
+            $validate['user_id'] = $user->id;
+            $category = Category::firstWhere('name', $validate['category']);
+            if (!$category) {
+                return response(['message' => 'Category not found'], 404);
+            }
+            $category_id = $category->id;
+            $product = Product::create([
+                'user_id' => $validate['user_id'],
+                'title' => $validate['title'],
+                'description' => $validate['description'],
+                'price' => $validate['price'],
+                'category_id' => $category_id,
+                'slidder' => $slidder,
+                'recommended' => $recommended,
+                'quantity' => $validate['quantity'],
+                'created_by' => $validate['user_id']
+            ]);
+            if (request()->has('photos')) {
+                foreach ($request->file('photos') as $photo) {
+                    $uploadedImage = $photo->storeOnCloudinary();
+                    $imageUrl = $uploadedImage->getSecurePath();
+                    $imageUrl = Image::create([
+                        'product_id' => $product->id,
+                        'image_url' => $imageUrl
+                    ]);
+                }
+            }
+        }
         return response([
-            "recommended" => $recommended ,
-            "slidder" => $slidder ,
+            "recommended" => $recommended,
+            "slidder" => $slidder,
 
             "message" => "Product Created Successfully.",
         ], 200);
@@ -158,8 +158,8 @@ class ProductController extends Controller
             'title' => 'required|string|max:255',
             'description' => 'required|string',
             'price' => 'required|numeric|min:0',
-            'recommended'=>'string',
-            'slidder'=>'string',
+            'recommended' => 'string',
+            'slidder' => 'string',
             'category' => 'required|string|exists:categories,name',
             'quantity' => 'required|integer|min:1',
             'photos' => 'array',
@@ -167,12 +167,12 @@ class ProductController extends Controller
             'deletedImages*' => 'integer',
             'photos.*' => 'image'
         ]);
-        if (request('recommended')&&request('recommended') === "true") {
+        if (request('recommended') && request('recommended') === "true") {
             $recommended = true;
-        } 
-        if (request('slidder')&&request('slidder') === "true") {
+        }
+        if (request('slidder') && request('slidder') === "true") {
             $slidder = true;
-        } 
+        }
         if (auth()->check()) {
             $user = auth()->user();
             $category = Category::firstWhere('name', $validate['category']);
@@ -217,17 +217,54 @@ class ProductController extends Controller
     } //
 
 
-    public function show(Request $request,$slug)
+    public function show(Request $request, $slug)
     {
 
         try {
-            $product= Product::with('category', 'images')->where('slug',$slug)->first();
+            $product = Product::with('category', 'images')->where('slug', $slug)->first();
         } catch (\Throwable $th) {
-            
+
             throw $th;
         }
-        return view('product',[
-            'product'=> $product
+        return view('product', [
+            'product' => $product
         ]);
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('query');
+        try {
+            $products = Product::with('images')->where(function ($query) use ($search) {
+                $query->where('title', 'like', '%' . $search . '%')->orWhere('description', 'like', '%' . $search . '%');
+            })->get();
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        return view(
+            'products',
+            [
+                'products' => $products,
+                'category_name' => 'Results'
+            ]
+        );
+    }
+
+    public function category(Request $request, $slug)
+    {
+        try {
+            $category = Category::where('name', $slug)->first();
+            $products = Product::with('images')->where('category_id', $category->id)->get();
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        return view(
+            'products',
+            [
+                'products' => $products,
+                'category_name' => $slug
+            ]
+        );
     }
 }

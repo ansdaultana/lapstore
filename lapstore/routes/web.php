@@ -17,7 +17,9 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [FrontendController::class,'index']);
-Route::get('products/{slug}',[ProductController::class,'show']);
+Route::get('product/{slug}',[ProductController::class,'show']);
+Route::get('/search',[ProductController::class,'search']);
+Route::get('/products/{slug}',[ProductController::class,'category']);
 
 Route::middleware('auth:sanctum')->group(function () {
     Route::get('/user', [AdminAuthController::class, 'getUser']);

@@ -7,7 +7,7 @@
 
             <div class>
                 <div
-                    class="p-8 bg-slate-200 rounded-2xl mt-6 hover:cursor-pointer transition-transform hover:scale-103 ease-in-out duration-200 shadow-lg ">
+                    class="p-8  rounded-2xl mt-6 hover:cursor-pointer transition-transform hover:scale-103 ease-in-out duration-300 shadow-sm bg-gradient-to-bl from-orange-100 via-orange-50 to-slate-100 shadow-green-200">
                     <img class="rounded-2xl md:w-96"
                         src="{{$product->images[0]->image_url}}" alt>
                 </div>
@@ -25,7 +25,7 @@
         </div>
         <div class="w-1/2 h-full ">
             <div class="mt-8  p-2 md:pl-8 flex">
-                <h1 class="text-2xl font-bold">{{$product->title}}</h1>
+                <h1 class="text-2xl font-bold ">{{$product->title}}</h1>
                 <!-- <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-red-400 hover:fill-red-600 w-6 h-6 m-1 ml-7">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
                   </svg> -->
@@ -33,17 +33,17 @@
             <div class=" pl-4 md:px-8 md:py-2 flex">
                 <h1 class="text-md">{{$product->description}}</h1>
             </div>
-            <div class="bg-gray-300 w-auto ml-2 md:ml-10 md:mr-20 h-0.5 "></div>
+            <div class="bg-green    -300 w-auto ml-2 md:ml-10 md:mr-20 h-0.5 "></div>
 
             <div class="p-2  md:p-8 flex">
 
                 <h1 class="text-xl ml-2 font-bold">Rs: {{$product->price}} /-
                     <span class="text-orange-600">Only</span></h1>
             </div>
-            <div class="bg-gray-300 w-auto ml-2 md:ml-10 md:mr-20 h-0.5 "></div>
+            <div class="bg-green-300 w-auto ml-2 md:ml-10 md:mr-20 h-0.5 "></div>
             <div class="mt-2 p-2 md:p-8 flex flex-row">
                 <div
-                    class="text-lg flex items-center bg-gray-100 py-1 px-4 rounded-2xl transition-transform hover:scale-103 duration-300 shadow-md ease-in-out">
+                    class="shadow-orange-100 text-lg flex items-center  bg-slate-100 py-1 px-4 rounded-2xl transition-transform hover:scale-103 duration-300 shadow-md ease-in-out">
                     <button>
 
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -74,7 +74,7 @@
             <div class="md:px-4 md:py-2 mb-2 py-4 flex space-x-3 md:space-x-6">
                 <div>
                     <button
-                        class="bg-gradient-to-r from-green-400 via-green-600 to-green-700 w-auto text-white  py-4 px-5 md:px-12 md:py-4 rounded-full transition-transform hover:scale-105 duration-300 shadow-xl border-green-900 border ease-in-out">
+                        class="shadow-green-100 bg-gradient-to-r from-green-400 via-green-600 to-green-700 w-auto text-white  py-4 px-5 md:px-12 md:py-4 rounded-full transition-transform hover:scale-105 duration-300 shadow-xl border-green-900 border ease-in-out">
 
                         <span class=" text-xs md:text-lg">Buy Now</span>
 
@@ -82,15 +82,15 @@
                 </div>
                 <div>
                     <button
-                        class="font-bold w-auto border-green-700 border-2  text-green-700 p-4 md:px-12 md:py-4 rounded-full transition-transform hover:scale-105 duration-300 shadow-md ease-in-out">
+                        class="shadow-green-100 font-bold w-auto border-green-700 border-2  text-green-700 p-4 md:px-12 md:py-4 rounded-full transition-transform hover:scale-105 duration-300 shadow-md ease-in-out">
                         <span class=" text-xs md:text-lg">Add to Cart</span>
                     </button>
 
                 </div>
             </div>
-            <div class="bg-gray-300 w-auto ml-2 md:ml-10 md:mr-20 h-0.5 "></div>
+            <div class="bg-green-300 w-auto ml-2 md:ml-10 md:mr-20 h-0.5 "></div>
             <div
-                class="border rounded-lg border-slate-300  ml-2 m-4 md:w-96 space-y-2 border-separate ">
+                class="border rounded-lg border-green-300  ml-2 m-4 md:w-96 space-y-2 border-separate ">
                 <div class="flex">
                     <div class="p-3">
                         <svg id="footer" class="animate-bounce" xmlns="http://www.w3.org/2000/svg" height="2em"
