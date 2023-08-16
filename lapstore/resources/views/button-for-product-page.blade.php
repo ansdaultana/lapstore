@@ -1,9 +1,13 @@
 <div class="filter relative">
 
     <button
-        class="filter justify-between md:w-28 shadow-lg flex rounded-full bg-orange-400 hover:bg-orange-500 transition-transform hover:scale-105 ease-in-out duration-200 px-2 py-1 text-white">
+        class="filter  justify-between md:w-28 shadow-lg flex rounded-full bg-orange-400 hover:bg-orange-500 transition-transform hover:scale-105 ease-in-out duration-200 px-2 py-1 text-white  @if($category_name==='Accessories') md:w-32 @endif">
         <span>
+            @if($filter==='Categories')
+            {{$category_name}}
+            @else
             {{$filter}}
+            @endif
         </span>
         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
             viewBox="0 0 24 24" stroke-width="1.5"
@@ -14,7 +18,7 @@
 
     </button>
 
-    <div class=" items-center h-auto shadow-lg  hidden  dropdown  z-20  p-2 bg-slate-100 rounded-lg">
+    <div class="text-sm items-center h-auto shadow-lg  hidden  dropdown  z-20  p-2 bg-slate-100 rounded-lg">
         @if($filter==='Categories')
         <ul class=" space-y-2">
             <li class="p-1  hover:text-orange-700 border-gray-300 border-b-2 transition-transform hover:scale-103 ease-in-out duration-200">
@@ -22,11 +26,11 @@
             <li class="p-1  hover:text-orange-700 border-gray-300 border-b-2 transition-transform hover:scale-103 ease-in-out duration-200">
                 <a href="/products/Accessories">Accessories</li></a>
                 </li>
-            <li class="p-1 hover:text-orange-700 transition-transform hover:scale-103 ease-in-out duration-200">
+            <li class="p-1 hover:text-orange-700 cursor-pointer border-gray-300 border-b-2 transition-transform hover:scale-103 ease-in-out duration-200">
                 <a href="/products/Others"> Others</li></a>
               
                </li>
-               <li class="p-1 hover:text-orange-700 transition-transform hover:scale-103 ease-in-out duration-200">
+               <li class="p-1 hover:text-orange-700 cursor-pointer transition-transform hover:scale-103 ease-in-out duration-200">
                 <a href="/products/All"> All</li></a>
               
                </li>
@@ -34,25 +38,25 @@
         @endif
         @if($filter==='Price')
         <ul class="">
-            <li class="p-1 hover:text-orange-700 border-gray-300 border-b-2 transition-transform hover:scale-103 ease-in-out duration-200">
+            <li class="p-1 hover:text-orange-700 cursor-pointer border-gray-300 border-b-2 transition-transform hover:scale-103 ease-in-out duration-200">
                 <a href="{{route('products.category',['slug'=>$category_name,'min_price'=>0,'max_price'=>1000,'sort' => request('sort')])}}">0 &lt; 1000 </a></li>
-            <li class="p-1 hover:text-orange-700 border-gray-300 border-b-2 transition-transform hover:scale-103 ease-in-out duration-200">
-                <a href="{{route('products.category',['slug'=>$category_name,'min_price'=>1000,'max_price'=>2000,'sort' => request('sort')])}}">1000&lt; 2000 </a></li>
+            <li class="p-1 hover:text-orange-700 cursor-pointer border-gray-300 border-b-2 transition-transform hover:scale-103 ease-in-out duration-200">
+                <a href="{{route('products.category',['slug'=>$category_name,'min_price'=>1000,'max_price'=>2000,'sort' => request('sort')])}}">1000 &lt; 2000 </a></li>
                  </li>
-            <li class="p-1 hover:text-orange-700 border-gray-300 border-b-2 transition-transform hover:scale-103 ease-in-out duration-200">
+            <li class="p-1 hover:text-orange-700 cursor-pointer border-gray-300 border-b-2 transition-transform hover:scale-103 ease-in-out duration-200">
                 <a href="{{route('products.category',['slug'=>$category_name,'min_price'=>2000,'max_price'=>3000,'sort' => request('sort')])}}">2000 &lt; 3000 </a></li>
                  </li>
-            <li class="p-1 hover:text-orange-700 transition-transform hover:scale-103 ease-in-out duration-200">
+            <li class="p-1 hover:text-orange-700 cursor-pointer transition-transform hover:scale-103 ease-in-out duration-200">
                 <a href="{{route('products.category',['slug'=>$category_name,'min_price'=>3000,'sort' => request('sort')])}}"> &gt; 3000</a></li>
                  </li>
         </ul>
         @endif
         @if($filter==='Sort By')
         <ul >
-            <li class="p-1 hover:text-orange-700 border-gray-300 border-b-2 transition-transform hover:scale-103 ease-in-out duration-200"> 
+            <li class="p-1 hover:text-orange-700 cursor-pointer border-gray-300 border-b-2 transition-transform hover:scale-103 ease-in-out duration-200"> 
                 
                <a href="{{route('products.category',['slug'=>$category_name,'sort'=>'latest', 'min_price' => request('min_price'), 'max_price' => request('max_price')])}}"> Latest</a></li>
-            <li class="p-1 hover:text-orange-700 transition-transform hover:scale-103 ease-in-out duration-200">
+            <li class="p-1 hover:text-orange-700 cursor-pointer transition-transform hover:scale-103 ease-in-out duration-200">
                <a href="{{route('products.category',['slug'=>$category_name,'sort'=>'oldest', 'min_price' => request('min_price'), 'max_price' => request('max_price')])}}"> Oldest</a> </li>
 
         </ul>

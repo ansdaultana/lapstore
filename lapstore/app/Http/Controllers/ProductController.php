@@ -292,10 +292,4 @@ class ProductController extends Controller
             ]
         );
     }
-
-    public function AddToCart(Request $request)
-    {
-
-        dd('here in Controller');
-    }
 }

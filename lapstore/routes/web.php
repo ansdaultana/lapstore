@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\AdminAuthController;
+use App\Http\Controllers\CartController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ProductController;
 use Illuminate\Support\Facades\Route;
@@ -16,11 +17,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', [FrontendController::class,'index']);
+Route::get('/', [FrontendController::class,'index'])->name('products.index');
 Route::get('product/{slug}',[ProductController::class,'show']);
 Route::get('/search',[ProductController::class,'search']);
 Route::get('/products/{slug}',[ProductController::class,'category'])->name('products.category');
-Route::post('/cart/add',[ProductController::class,'AddToCart']);
+Route::post('/cart/add/{slug}',[CartController::class,'Add'])->name('cart.add');
 
 Route::middleware('auth:sanctum')->group(function () {
 Route::get('/user', [AdminAuthController::class, 'getUser']);

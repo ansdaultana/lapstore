@@ -11,8 +11,8 @@
                         <img class="rounded-2xl md:w-96" x-bind:src="selectedImage" alt>
                     </div>
                 </div>
-
-                    <div class="mt-2 flex space-x-4">
+            @if($product->images)
+                    <div class="m-2 flex space-x-4">
                         @foreach($product->images as $image)
                         <div x-on:click="selectedImage = '{{ $image->image_url }}'"
                             class="bg-slate-200 rounded-2xl md:h-24 hover:cursor-pointer transition-transform hover:scale-103 ease-in-out duration-200">
@@ -20,6 +20,7 @@
                         </div>
                         @endforeach
                     </div>
+            @endif
                 </div>
             </div>
             

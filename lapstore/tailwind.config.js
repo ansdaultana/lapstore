@@ -17,6 +17,9 @@ export default {
             scale: {
                 '103': '1.03',
               },
+              width: {
+                '30': '7.5rem', // Adjust the value as needed
+              },
         },
     },
    
