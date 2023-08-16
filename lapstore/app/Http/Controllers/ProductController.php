@@ -253,9 +253,33 @@ class ProductController extends Controller
 
     public function category(Request $request, $slug)
     {
+
         try {
-            $category = Category::where('name', $slug)->first();
-            $products = Product::with('images')->where('category_id', $category->id)->get();
+            $productsQuery= Product::query();
+            if ($slug !== 'All') {
+                $category = Category::where('name', $slug)->first();
+                $productsQuery->where('category_id', $category->id);
+
+            }
+            if (request()->has('sort')) {
+                $sort = request()->input('sort');
+                if ($sort === 'latest') {
+                    $productsQuery->latest();
+                } else if ($sort === 'oldest') {
+                    $productsQuery->oldest();
+                }
+            }
+            if (request()->has('max_price')) {
+                $maxP = request()->input('max_price');
+                $productsQuery->where('price', '<=', $maxP);
+            }
+
+            if (request()->has('min_price')) {
+                # code...
+                $minP = request()->input('min_price');
+                $productsQuery->where('price', '>=', $minP);
+            }
+            $products = $productsQuery->with('images')->get();
         } catch (\Throwable $th) {
             throw $th;
         }
@@ -263,8 +287,15 @@ class ProductController extends Controller
             'products',
             [
                 'products' => $products,
-                'category_name' => $slug
+                'category_name' => $slug,
+
             ]
         );
+    }
+
+    public function AddToCart(Request $request)
+    {
+
+        dd('here in Controller');
     }
 }

@@ -1,7 +1,7 @@
 <main>
   <div class="font-sans">
     <div
-      class=" top-0 left-0 right-0 z-[100] bg-transparent shadow-md  rounded-b-xl flex justify-between p-1 md:p-2  rounded-md    text-white @if(request()->is('/')) fixed @endif">
+      class=" top-0 left-0 right-0 z-[100] bg-transparent shadow-md  rounded-b-xl flex justify-between p-1   rounded-md    text-white @if(request()->is('/')) fixed @endif">
       <div class="flex  text-gradient">
         <svg fill="none" viewBox="0 0 24 24" stroke-width="1.5"
           stroke="currentColor" class=" mt-3 w-6 h-6  ">

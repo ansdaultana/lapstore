@@ -5,9 +5,13 @@
         <div class="flex">
             <div class="w-1/2 h-full justify-center items-center flex">
                 <div class="w-full">
-                    <div class="p-8 rounded-2xl mt-6 hover:cursor-pointer transition-transform hover:scale-103 ease-in-out duration-300  shadow-sm bg-gradient-to-bl from-orange-100 via-orange-50 to-slate-100 shadow-green-200">
+                    <div class="items-center justify-center flex ">
+
+                    <div class="p-8 w-96    rounded-2xl mt-6 hover:cursor-pointer transition-transform hover:scale-103 ease-in-out duration-300  shadow-sm bg-gradient-to-bl from-orange-100 via-orange-50 to-slate-100 shadow-green-200">
                         <img class="rounded-2xl md:w-96" x-bind:src="selectedImage" alt>
                     </div>
+                </div>
+
                     <div class="mt-2 flex space-x-4">
                         @foreach($product->images as $image)
                         <div x-on:click="selectedImage = '{{ $image->image_url }}'"
