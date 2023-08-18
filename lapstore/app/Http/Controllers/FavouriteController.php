@@ -13,13 +13,10 @@ class FavouriteController extends Controller
         try {
             // Get the favourite from the session, or initialize it as an empty arraye
             $favourite = session()->get('favourite', []);
-            if (isset($favourite[$slug])) {
-                unset($favourite[$slug]);
-                session(['favourite' => $favourite]);
+            if (in_array($slug, $favourite)) {
+                $favourite = array_diff($favourite, [$slug]);
             } else {
-                $favourite[$slug] = [
-                    'product_slug' => $slug,
-                ];
+                $favourite[] = $slug;
             }
             session()->put('favourite', $favourite);
 

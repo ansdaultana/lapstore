@@ -11,7 +11,9 @@ class FrontendController extends Controller
 
     public function index()
     {
-       // session()->forget('cart');
+        //session()->forget('favourite');
+        //session()->forget('cart');
+
         // "https://res.cloudinary.com/ddrivhxfq/image/upload/f_auto,q_auto/qzrvdo3bxb4yd0bigs1u",
         // "https://res.cloudinary.com/ddrivhxfq/image/upload/f_auto,q_auto/rhaojzxt0rbkbjtaw7sl",
         $recommended = Product::with('category', 'images')->where('recommended', true)->get();

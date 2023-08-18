@@ -10,7 +10,7 @@ class CartController extends Controller
     //
     public function Add(Request $request, $slug)
     {
-            $quantity = $request->input('quantity', 1);
+        $quantity = $request->input('quantity', 1);
         try {
 
             $product = Product::where('slug', $slug)->firstOrFail();
@@ -20,7 +20,6 @@ class CartController extends Controller
                 $cart[$slug]['quantity'] += $quantity;
             } else {
                 $cart[$slug] = [
-                    'product_slug' => $slug,
                     'quantity' => $quantity,
                 ];
             }
@@ -32,5 +31,17 @@ class CartController extends Controller
 
         return redirect()->route('products.index')->with('success', 'Item added to cart.');
 
+    }
+
+    public function index(Request $request)
+    {
+        try {
+            
+            $cart=session()->get('cart',[]);
+            
+        } catch (\Throwable $th) {
+            //throw $th;
+        }
+        return view('cart');
     }
 }

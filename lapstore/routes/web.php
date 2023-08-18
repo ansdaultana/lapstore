@@ -23,6 +23,7 @@ Route::get('product/{slug}',[ProductController::class,'show']);
 Route::get('/search',[ProductController::class,'search']);
 Route::get('/products/{slug}',[ProductController::class,'category'])->name('products.category');
 Route::post('/cart/add/{slug}',[CartController::class,'Add'])->name('cart.add');
+Route::get('/cart',[CartController::class,'index'])->name('cart.view');
 Route::post('/favourite/add/{slug}',[FavouriteController::class,'AddorRemove'])->name('favourite.add');
 Route::middleware('auth:sanctum')->group(function () {
 Route::get('/user', [AdminAuthController::class, 'getUser']);
