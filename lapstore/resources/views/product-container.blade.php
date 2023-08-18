@@ -10,7 +10,7 @@
     <div class="flex justify-between">
       <h4 class="mt-1 text-xs md:text-md text-gray-700 ">{{$product->title}}
       </h4>
-      <form action="/favourite/add/{{$product->slug}}" method="POST">
+      <form action="/favourite/addremove/{{$product->slug}}" method="POST">
         @csrf
       <button type="submit">
         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24"
@@ -29,7 +29,7 @@
 
     <div class="flex justify-end ">
       
-      <form action="/cart/add/{{$product->slug}}" method="POST">
+      <form action="/cart/addremove/{{$product->slug}}" method="POST">
         @csrf 
       <button
         x-data="{ productId: {{$product->id}} }"

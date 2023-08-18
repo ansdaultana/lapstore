@@ -16,7 +16,7 @@ class FrontendController extends Controller
 
         // "https://res.cloudinary.com/ddrivhxfq/image/upload/f_auto,q_auto/qzrvdo3bxb4yd0bigs1u",
         // "https://res.cloudinary.com/ddrivhxfq/image/upload/f_auto,q_auto/rhaojzxt0rbkbjtaw7sl",
-        $recommended = Product::with('category', 'images')->where('recommended', true)->get();
+        $recommended = Product::with('category', 'images')->where('recommended', true)->latest()->get();
         $categories = Category::get();
         // dd($recommended[1]->images[0]->image_url);
         $slidder_images = [

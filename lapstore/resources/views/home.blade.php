@@ -9,7 +9,6 @@
   <div class>
 
     @include('heading',['headingtext'=>'Categories'])
-    <!-- @include('favourite') -->
     @include('categories')
 
     @include('heading',['headingtext'=>'Promos'])

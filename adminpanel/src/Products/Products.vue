@@ -189,7 +189,7 @@ const ToggleModal = () => { openmodal.value = !openmodal.value }
 
               </div>
             </div>
-            <div class=":w-16 md:w-44">
+            <div class="w-16 md:w-44">
               {{ product.title }}
 
             </div>

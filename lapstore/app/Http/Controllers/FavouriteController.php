@@ -8,22 +8,45 @@ use Illuminate\Http\Request;
 class FavouriteController extends Controller
 {
     //
-    public function AddorRemove(Request $request, $slug)
+    public function addremove(Request $request, $slug)
     {
         try {
             // Get the favourite from the session, or initialize it as an empty arraye
             $favourite = session()->get('favourite', []);
-            if (in_array($slug, $favourite)) {
-                $favourite = array_diff($favourite, [$slug]);
+            if (isset($favourite[$slug])) {
+                unset($favourite[$slug]);
             } else {
-                $favourite[] = $slug;
+                $favourite[$slug] = true;
             }
             session()->put('favourite', $favourite);
 
         } catch (\Throwable $th) {
             throw $th;
         }
-        return redirect()->route('products.index')->with('success', 'Item added to favourite.');
+        return redirect(route('favourite.view'))->with('success', 'Item added to favourite.');
 
     }
+    public function index(Request $request)
+    {
+        try {
+
+            $favourite = session()->get('favourite', []);
+            $products = [];
+            foreach ($favourite as $slug => $item) {
+                $product = Product::with('category', 'images')->where('slug', $slug)->first();
+                if ($product) {
+                    $products[] = $product;
+                }
+
+            }
+
+        } catch (\Throwable $th) {
+            throw $th;
+        }
+        return view('favourite', [
+            'products' => $products,
+
+        ]);
+    }
+  
 }

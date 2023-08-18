@@ -31,7 +31,15 @@
         <div class="w-1/2 h-full ">
             <div class="mt-8  p-2 md:pl-8 flex">
                 <h1 class="text-2xl font-bold ">{{$product->title}}</h1>
-                
+                <form action="/favourite/addremove/{{$product->slug}}" method="POST">
+                    @csrf
+                <button class="mt-2 block md:hidden" type="submit">
+
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class=" animate-bounce text-red-400 hover:fill-red-600 w-6 h-6 m-1 ml-7">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
+                  </svg>   
+                </button>
+            </form>
             </div>
             <div class=" pl-4 md:px-8 md:py-2 flex">
                 <h1 class="text-md">{{$product->description}}</h1>
@@ -46,7 +54,7 @@
             <div class="bg-green-300 w-auto ml-2 md:ml-10 md:mr-20 h-0.5 "></div>
             <div class="mt-2 p-2 md:p-8 flex flex-row">
                 <div
-                    class="shadow-orange-100 text-lg flex items-center  bg-slate-100 py-1 px-4 rounded-2xl transition-transform hover:scale-103 duration-300 shadow-md ease-in-out">
+                    class="shadow-orange-100 text-lg flex items-center h-14 bg-slate-100 py-1 px-4 rounded-2xl transition-transform hover:scale-103 duration-300 shadow-md ease-in-out">
                     <button x-on:click="if(quantity>1) quantity-=1">
 
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none"
@@ -75,9 +83,9 @@
                         Left!</div>
                     <div class="hidden md:block">Don't Miss</div>
                 </div>
-                <form action="/favourite/add/{{$product->slug}}" method="POST">
+                <form action="/favourite/addremove/{{$product->slug}}" method="POST">
                     @csrf
-                <button class="mt-2" type="submit">
+                <button class="mt-2 hidden md:block" type="submit">
 
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class=" animate-bounce text-red-400 hover:fill-red-600 w-6 h-6 m-1 ml-7">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M11.48 3.499a.562.562 0 011.04 0l2.125 5.111a.563.563 0 00.475.345l5.518.442c.499.04.701.663.321.988l-4.204 3.602a.563.563 0 00-.182.557l1.285 5.385a.562.562 0 01-.84.61l-4.725-2.885a.563.563 0 00-.586 0L6.982 20.54a.562.562 0 01-.84-.61l1.285-5.386a.562.562 0 00-.182-.557l-4.204-3.602a.563.563 0 01.321-.988l5.518-.442a.563.563 0 00.475-.345L11.48 3.5z" />
@@ -89,7 +97,7 @@
             <div class="md:px-4 md:py-2 mb-2 py-4 flex space-x-3 md:space-x-6">
                 <div>
                     <button
-                        class="shadow-green-100 bg-gradient-to-r from-green-400 via-green-600 to-green-700 w-auto text-white  py-4 px-5 md:px-12 md:py-4 rounded-full transition-transform hover:scale-105 duration-300 shadow-xl border-green-900 border ease-in-out">
+                        class="shadow-green-100 bg-gradient-to-r from-green-400 via-green-600 to-green-700 w-auto text-white  py-1 px-3 md:px-12 md:py-4 rounded-full transition-transform hover:scale-105 duration-300 shadow-xl border-green-900 border ease-in-out">
 
                         <span class=" text-xs md:text-lg">Buy Now</span>
 
@@ -102,7 +110,7 @@
                     <div>
                         <input type="hidden"  name="quantity" x-model="quantity" id="">
                         <button
-                            class="shadow-green-100 font-bold w-auto border-green-700 border-2  text-green-700 p-4 md:px-12 md:py-4 rounded-full transition-transform hover:scale-105 duration-300 shadow-md ease-in-out">
+                            class="shadow-green-100 font-bold w-auto border-green-700 border-2  text-green-700 p-1 md:px-12 md:py-4 rounded-full transition-transform hover:scale-105 duration-300 shadow-md ease-in-out">
                             <span class=" text-xs md:text-lg">Add to Cart</span>
                         </button>
 

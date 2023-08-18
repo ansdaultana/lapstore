@@ -22,9 +22,13 @@ Route::get('/', [FrontendController::class,'index'])->name('products.index');
 Route::get('product/{slug}',[ProductController::class,'show']);
 Route::get('/search',[ProductController::class,'search']);
 Route::get('/products/{slug}',[ProductController::class,'category'])->name('products.category');
-Route::post('/cart/add/{slug}',[CartController::class,'Add'])->name('cart.add');
+
 Route::get('/cart',[CartController::class,'index'])->name('cart.view');
-Route::post('/favourite/add/{slug}',[FavouriteController::class,'AddorRemove'])->name('favourite.add');
+Route::post('/cart/add/{slug}',[CartController::class,'Add'])->name('cart.add');
+
+Route::post('/favourite/addremove/{slug}',[FavouriteController::class,'addremove'])->name('favourite.add');
+Route::get('/favourite',[FavouriteController::class,'index'])->name('favourite.view');
+
 Route::middleware('auth:sanctum')->group(function () {
 Route::get('/user', [AdminAuthController::class, 'getUser']);
 Route::post('/api/logout', [AdminAuthController::class, 'logout']);
