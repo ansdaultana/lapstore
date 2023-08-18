@@ -21,8 +21,6 @@ class CartController extends Controller
             } else {
                 $cart[$slug] = [
                     'product_slug' => $slug,
-                    'title' => $product->title,
-                    'price' => $product->price,
                     'quantity' => $quantity,
                 ];
             }

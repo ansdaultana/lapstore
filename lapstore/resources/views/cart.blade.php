@@ -1,3 +1,4 @@
+cart 
 @foreach(session('cart', []) as $item)
-    <p>{{ $item['title'] }} - ${{ $item['price'] }} - Quantity: {{ $item['quantity'] }}</p>
+    <p>{{ $item['product_slug'] }}  - Quantity: {{ $item['quantity'] }}</p>
 @endforeach
