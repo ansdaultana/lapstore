@@ -9,7 +9,7 @@
   <div class>
 
     @include('heading',['headingtext'=>'Categories'])
-
+    @include('cart')
     @include('categories')
 
     @include('heading',['headingtext'=>'Promos'])

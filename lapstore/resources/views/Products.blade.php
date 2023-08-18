@@ -2,7 +2,7 @@
 @section('content')
 @include('navbar')
 <main>
-    <div class="mt-4 justify-between ml-10 mr-10 flex ">
+    <div class="mt-4 justify-between md:ml-10 md:mr-10 m-2 flex ">
         <div class=" flex">
             <div>
                 @include('button-for-product-page',['filter'=>'Categories'])
