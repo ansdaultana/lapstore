@@ -39,15 +39,15 @@
         @if($filter==='Price')
         <ul class="">
             <li class="p-1 hover:text-orange-700 cursor-pointer border-gray-300 border-b-2 transition-transform hover:scale-103 ease-in-out duration-200">
-                <a href="{{route('products.category',['slug'=>$category_name,'min_price'=>0,'max_price'=>1000,'sort' => request('sort')])}}">0 &lt; 1000 </a></li>
+                <a href="{{route('products.category',['slug'=>$category_name,'min_price'=>0,'max_price'=>1000,'sort' => request('sort') ,'search' => request('search')])}}">0 &lt; 1000 </a></li>
             <li class="p-1 hover:text-orange-700 cursor-pointer border-gray-300 border-b-2 transition-transform hover:scale-103 ease-in-out duration-200">
-                <a href="{{route('products.category',['slug'=>$category_name,'min_price'=>1000,'max_price'=>2000,'sort' => request('sort')])}}">1000 &lt; 2000 </a></li>
+                <a href="{{route('products.category',['slug'=>$category_name,'min_price'=>1000,'max_price'=>2000,'sort' => request('sort'),'search' => request('search')])}}">1000 &lt; 2000 </a></li>
                  </li>
             <li class="p-1 hover:text-orange-700 cursor-pointer border-gray-300 border-b-2 transition-transform hover:scale-103 ease-in-out duration-200">
-                <a href="{{route('products.category',['slug'=>$category_name,'min_price'=>2000,'max_price'=>3000,'sort' => request('sort')])}}">2000 &lt; 3000 </a></li>
+                <a href="{{route('products.category',['slug'=>$category_name,'min_price'=>2000,'max_price'=>3000,'sort' => request('sort'),'search' => request('search')])}}">2000 &lt; 3000 </a></li>
                  </li>
             <li class="p-1 hover:text-orange-700 cursor-pointer transition-transform hover:scale-103 ease-in-out duration-200">
-                <a href="{{route('products.category',['slug'=>$category_name,'min_price'=>3000,'sort' => request('sort')])}}"> &gt; 3000</a></li>
+                <a href="{{route('products.category',['slug'=>$category_name,'min_price'=>3000,'sort' => request('sort'),'search' => request('search')])}}"> &gt; 3000</a></li>
                  </li>
         </ul>
         @endif
@@ -55,9 +55,9 @@
         <ul >
             <li class="p-1 hover:text-orange-700 cursor-pointer border-gray-300 border-b-2 transition-transform hover:scale-103 ease-in-out duration-200"> 
                 
-               <a href="{{route('products.category',['slug'=>$category_name,'sort'=>'latest', 'min_price' => request('min_price'), 'max_price' => request('max_price')])}}"> Latest</a></li>
+               <a href="{{route('products.category',['slug'=>$category_name,'sort'=>'latest', 'min_price' => request('min_price'), 'max_price' => request('max_price'),'search' => request('search')])}}"> Latest</a></li>
             <li class="p-1 hover:text-orange-700 cursor-pointer transition-transform hover:scale-103 ease-in-out duration-200">
-               <a href="{{route('products.category',['slug'=>$category_name,'sort'=>'oldest', 'min_price' => request('min_price'), 'max_price' => request('max_price')])}}"> Oldest</a> </li>
+               <a href="{{route('products.category',['slug'=>$category_name,'sort'=>'oldest', 'min_price' => request('min_price'), 'max_price' => request('max_price'),'search' => request('search')])}}"> Oldest</a> </li>
 
         </ul>
         @endif

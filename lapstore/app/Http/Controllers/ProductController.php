@@ -233,7 +233,7 @@ class ProductController extends Controller
 
     public function search(Request $request)
     {
-        $search = $request->input('query');
+        $search = $request->input('search');
         try {
             $products = Product::with('images')->where(function ($query) use ($search) {
                 $query->where('title', 'like', '%' . $search . '%')->orWhere('description', 'like', '%' . $search . '%');
@@ -253,43 +253,55 @@ class ProductController extends Controller
 
     public function category(Request $request, $slug)
     {
-
         try {
-            $productsQuery= Product::query();
+            $productsQuery = Product::query();
+    
             if ($slug !== 'All') {
                 $category = Category::where('name', $slug)->first();
-                $productsQuery->where('category_id', $category->id);
-
+                if ($category) {
+                    $productsQuery->where('category_id', $category->id);
+                }
             }
+    
             if (request()->has('sort')) {
                 $sort = request()->input('sort');
                 if ($sort === 'latest') {
                     $productsQuery->latest();
-                } else if ($sort === 'oldest') {
+                } elseif ($sort === 'oldest') {
                     $productsQuery->oldest();
                 }
             }
+    
             if (request()->has('max_price')) {
                 $maxP = request()->input('max_price');
                 $productsQuery->where('price', '<=', $maxP);
             }
-
+    
             if (request()->has('min_price')) {
-                # code...
                 $minP = request()->input('min_price');
                 $productsQuery->where('price', '>=', $minP);
             }
+    
+            if (request()->has('search')) {
+                $search = request()->input('search');
+                $productsQuery->where(function ($query) use ($search) {
+                    $query->where('title', 'like', '%' . $search . '%')
+                        ->orWhere('description', 'like', '%' . $search . '%');
+                });
+            }
+    
             $products = $productsQuery->with('images')->get();
         } catch (\Throwable $th) {
             throw $th;
         }
+    
         return view(
             'products',
             [
                 'products' => $products,
                 'category_name' => $slug,
-
             ]
         );
     }
+    
 }

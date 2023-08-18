@@ -29,7 +29,7 @@
               </button>
             <input
               class=" transition-transform hover:scale-103 appearance-none relative block w-32 lg:w-48 px-3 py-1 md:py-2 border border-orange-300 placeholder-orange-600 text-orange-600 rounded-lg focus:outline-none bg-transparent focus:ring-orange-400 focus:border-orange-400 focus:z-10 sm:text-sm"
-              placeholder="Type to Search products" name="query">
+              placeholder="Type to Search products" name="search">
             
           </div>
           </form>
