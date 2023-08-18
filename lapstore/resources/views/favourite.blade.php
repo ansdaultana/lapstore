@@ -14,14 +14,23 @@
     </div>
 
     <div class="flex items-center justify-center  "
-        x-data="{quantities: {{ json_encode(session('favourite', [])) }}}">
+        x-data="{quantities: {{ json_encode(session('favourite', [])) }},selected:[]}">
         <div class="h-auto p-4 mt-4 bg-slate-200 w-[95%] md:w-[60%] rounded-lg">
             @foreach($products as $product)
             <a href="/product/{{$product->slug}}">
                 <div
                     class="bg-slate-50 rounded-lg  p-2 flex m-2 transition-transform hover:scale-102 duration-300 ease-in-out"
-                    x-data="{quantity:1}">
+                    x-data="{quantity:1,isSelected: false}">
                     <div class="flex items-center justify-center">
+                        <div class="m-2">
+                            <label class="inline-flex items-center">
+                                <input type="checkbox" x-model="isSelected"
+                                    class="w-4 h-4 rounded-full"
+                                    x-on:click="isSelected = !isSelected; 
+                                    if (isSelected) selected.push('{{$product->slug}}');
+                                    else selected = selected.filter(slug => slug !== '{{$product->slug}}');">
+                            </label>
+                        </div>
                         @if($product->images)
                         <div class=" ml-4 ">
                             <img class=" w-24 rounded-lg "
@@ -35,7 +44,7 @@
                     </div>
                     <div class="flex items-center justify-center">
                         <div
-                            class="shadow-orange-100 flex items-center bg-slate-200 p-2  h-10 rounded-2xl transition-transform hover:scale-103 duration-300 shadow-sm ease-in-out">
+                            class="shadow-orange-100 flex flex-col md:flex-row items-center bg-slate-200 p-1 md:p-2  md:h-10 rounded-2xl transition-transform hover:scale-103 duration-300 shadow-sm ease-in-out">
                             <button x-on:click="if(quantity>1) quantity-=1"
                                 class="bg-blue-400 font-bold text-white md:px-2 md:py-1 rounded-lg">
 
@@ -51,7 +60,7 @@
                             </button>
                             <div
                                 x-text="quantity"
-                                class="p-1 md:py-2  animate-pulse md:px-4 text-orange-600 text-lg md:text-2xl font-bold animate-"></div>
+                                class="p-1 md:py-2  animate-pulse md:px-4 text-orange-600 text-sm md:text-2xl font-bold animate-"></div>
                             <button
                                 class="bg-blue-400 font-bold text-white md:px-2 md:py-1  rounded-lg"
                                 x-on:click="if(quantity < {{$product->quantity}} ) quantity+=1">
@@ -67,7 +76,7 @@
                         </div>
                     </div>
                     <div
-                        class="flex items-center justify-center text-sm p-2 m-1 md:m-8 w-16 md:w-44">
+                        class="flex items-center justify-center text-sm p-2 m-1 md:m-4 w-16 md:w-32">
                         <span>Rs: </span>
                         <span class="ml-1 "
                             x-text="{{$product->price}} *   quantity"></span>
@@ -95,6 +104,17 @@
                 </div>
             </a>
             @endforeach
+            <form action="/checkout" method="post">
+                @csrf
+                <input type="hidden" name="selected_products"
+                    :value="JSON.stringify(selected)">
+                    <div class="flex justify-end mt-2 ">
+
+                <button type="submit"
+                    class="bg-orange-500 text-white rounded-lg p-2">Check out</button>
+           
+                </div>
+            </form>
         </div></div>
         <div class="h-36"></div>
 </main>

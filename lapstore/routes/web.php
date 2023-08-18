@@ -2,6 +2,7 @@
 
 use App\Http\Controllers\AdminAuthController;
 use App\Http\Controllers\CartController;
+use App\Http\Controllers\CheckoutController;
 use App\Http\Controllers\FavouriteController;
 use App\Http\Controllers\FrontendController;
 use App\Http\Controllers\ProductController;
@@ -29,6 +30,7 @@ Route::post('/cart/add/{slug}',[CartController::class,'Add'])->name('cart.add');
 Route::post('/favourite/addremove/{slug}',[FavouriteController::class,'addremove'])->name('favourite.add');
 Route::get('/favourite',[FavouriteController::class,'index'])->name('favourite.view');
 
+Route::post('/checkout',[CheckoutController::class,'index'])->name('checkout.index');
 Route::middleware('auth:sanctum')->group(function () {
 Route::get('/user', [AdminAuthController::class, 'getUser']);
 Route::post('/api/logout', [AdminAuthController::class, 'logout']);
