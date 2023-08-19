@@ -54,14 +54,19 @@ class CartController extends Controller
     {
         try {
             $cart = session()->get('cart', []);
-            if (isset($cart[$slug])) 
-            {
+            if (isset($cart[$slug])) {
                 unset($cart[$slug]);
             }
-            session()->put('cart',$cart);
+          //  dd($cart);
+            session()->put('cart', $cart);
         } catch (\Throwable $th) {
             throw $th;
         }
         return back()->with('success', 'Item removed from cart.');
+    }
+
+    public function AddfromFav(Request $request)
+    {
+        dd(request()->input('selected_products'));
     }
 }

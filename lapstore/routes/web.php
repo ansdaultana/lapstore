@@ -26,6 +26,9 @@ Route::get('/products/{slug}',[ProductController::class,'category'])->name('prod
 
 Route::get('/cart',[CartController::class,'index'])->name('cart.view');
 Route::post('/cart/add/{slug}',[CartController::class,'Add'])->name('cart.add');
+Route::post('/cart/remove/{slug}',[CartController::class,'Remove'])->name('cart.remove');
+
+Route::post('/cart/add}',[CartController::class,'AddfromFav'])->name('cart.add');
 
 Route::post('/favourite/addremove/{slug}',[FavouriteController::class,'addremove'])->name('favourite.add');
 Route::get('/favourite',[FavouriteController::class,'index'])->name('favourite.view');

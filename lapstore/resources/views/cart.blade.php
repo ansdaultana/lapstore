@@ -1,20 +1,20 @@
 @extends('layout')
 @include('navbar')
-<main class>
-    <div class="ml-5 md:ml-20 ">
+<main x-data="{count:{{count(session('cart',[]))}}}">
+    <div class="ml-5 md:ml-20 " >
         <div class=" text-2xl p-2 font-sans">
             Your Cart!
         </div>
         <div class=" p-2">
-            You have <span class="text-orange-600 font-bold text-lg">
-                {{count(session('cart',[]))}}
+            You have <span class="text-orange-600 font-bold text-lg" x-text="count">
+               
             </span>
             item in you cart.
         </div>
     </div>
 
     <div class="flex items-center justify-center  "
-        x-data="{quantities: {{ json_encode(session('cart', [])) }},selected:[]}">
+        x-data="{quantities: {{ json_encode(session('cart', [])) }},selected:{},subtotal:0}">
         <div class="h-auto p-4 mt-4 bg-slate-200 w-[95%] md:w-[60%] rounded-lg">
             @foreach($products as $product)
             <a href="/product/{{$product->slug}}">
@@ -28,8 +28,8 @@
                                     <input type="checkbox" x-model="isSelected"
                                         class="w-4 h-4 rounded-full"
                                         x-on:click="isSelected = !isSelected; 
-                                        if (isSelected) selected.push('{{$product->slug}}');
-                                        else selected = selected.filter(slug => slug !== '{{$product->slug}}');">
+                                        if (isSelected) selected['{{$product->slug}}'] = quantity;
+                                        else delete selected['{{$product->slug}}'];">
                                 </label>
                             </div>
                         </div>
@@ -47,8 +47,9 @@
                     </div>
                     <div class="flex items-center justify-center">
                         <div
-                            class="shadow-orange-100 flex items-center bg-slate-200 p-2  h-10 rounded-2xl transition-transform hover:scale-103 duration-300 shadow-sm ease-in-out">
-                            <button x-on:click="if(quantity>1) quantity-=1"
+                            class="shadow-orange-100 flex flex-col md:flex-row items-center bg-slate-200 p-1 md:p-2  md:h-10 rounded-2xl transition-transform hover:scale-103 duration-300 shadow-sm ease-in-out">
+                            <button
+                                @click.prevent="if (quantity > 1) { quantity -= 1; selected['{{$product->slug}}'] = quantity; }"
                                 class="bg-blue-400 font-bold text-white md:px-2 md:py-1 rounded-lg">
 
                                 <svg xmlns="http://www.w3.org/2000/svg"
@@ -63,10 +64,11 @@
                             </button>
                             <div
                                 x-text="quantity"
-                                class="p-1 md:py-2  animate-pulse md:px-4 text-orange-600 text-lg md:text-2xl font-bold animate-"></div>
+                                x-bind:max="{{$product->quantity}}"
+                                class="p-1 md:py-2  animate-pulse md:px-4 text-orange-600 text-sm md:text-2xl font-bold animate-"></div>
                             <button
-                                class="bg-blue-400 font-bold text-white md:px-2 md:py-1  rounded-lg"
-                                x-on:click="if(quantity < {{$product->quantity}} ) quantity+=1">
+                                @click.prevent="if (quantity < {{$product->quantity}}) { quantity += 1; selected['{{$product->slug}}'] = quantity; }"
+                                class="bg-blue-400 font-bold text-white md:px-2 md:py-1  rounded-lg">
                                 <svg xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24" stroke-width="1.5"
@@ -113,21 +115,29 @@
                 </div>
             </a>
             @endforeach
+            <div class="underline m-2 p-2 hover:cursor-pointer hover:text-orange-400" x-show="count===0">
+                <a href="/">
+                Go to Home Page to Explore Products
+
+                </a>
+            </div>
             <form action="/checkout" method="post">
                 @csrf
                 <input type="hidden" name="selected_products"
                     :value="JSON.stringify(selected)">
-                    <div class="flex justify-end mt-2 ">
+                <div class="flex justify-end mt-2 ">
+                    <!-- <div>
+                        Your subtotal is: <span x-value="subtotal"></span>
+                    </div>-->
+                    <button type="submit" x-show="count>0"
+                        x-bind:disabled="Object.keys(selected).length === 0"
+                        class="bg-orange-500 text-white rounded-lg p-2 disabled:bg-orange-400 disabled:cursor-not-allowed">Check
+                        out</button>
 
-                <button type="submit"
-                    class="bg-orange-500 text-white rounded-lg p-2">Check out</button>
-           
                 </div>
             </form>
         </div></div>
-    <div>
-
-    </div>
+ 
     <div class="h-36"></div>
 </main>
 @include('footer')

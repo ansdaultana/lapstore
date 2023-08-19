@@ -29,7 +29,7 @@
 
     <div class="flex justify-end ">
       
-      <form action="/cart/addremove/{{$product->slug}}" method="POST">
+      <form action="/cart/add/{{$product->slug}}" method="POST">
         @csrf 
       <button
         x-data="{ productId: {{$product->id}} }"
